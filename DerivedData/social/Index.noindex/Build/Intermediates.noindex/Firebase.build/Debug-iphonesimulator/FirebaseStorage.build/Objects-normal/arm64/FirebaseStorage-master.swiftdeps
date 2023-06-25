@@ -1,0 +1,51 @@
+version: "Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)"
+options: "ed03f4af104bf863b70285efc40172c405fff741efe46af9f57acca4502a8630"
+build_start_time: [1687871101, 457137000]
+build_end_time: [1687871103, 27374000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/AsyncAwait.swift"
+  : [1687360585, 372464516]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageDeleteTask.swift"
+  : [1687360585, 372585143]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageGetDownloadURLTask.swift"
+  : [1687360585, 372665185]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageGetMetadataTask.swift"
+  : [1687360585, 372744853]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageListTask.swift"
+  : [1687360585, 372793729]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StoragePath.swift"
+  : [1687360585, 372869772]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageTaskState.swift"
+  : [1687360585, 372928648]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageTokenAuthorizer.swift"
+  : [1687360585, 373024524]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageUpdateMetadataTask.swift"
+  : [1687360585, 373081442]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Internal/StorageUtils.swift"
+  : [1687360585, 373156318]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Result.swift"
+  : [1687360585, 373234277]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/Storage.swift"
+  : [1687360585, 373372446]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageComponent.swift"
+  : [1687360585, 373441822]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageConstants.swift"
+  : [1687360585, 373505656]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageDownloadTask.swift"
+  : [1687360585, 373590074]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageError.swift"
+  : [1687360585, 373702118]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageListResult.swift"
+  : [1687360585, 373768577]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageMetadata.swift"
+  : [1687360585, 373859203]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageObservableTask.swift"
+  : [1687360585, 373934621]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageReference.swift"
+  : [1687360585, 374078040]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageTask.swift"
+  : [1687360585, 374152416]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageTaskSnapshot.swift"
+  : [1687360585, 374248709]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseStorage/Sources/StorageUploadTask.swift"
+  : [1687360585, 374347752]

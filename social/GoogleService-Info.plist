@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>383803792512-1r2fbjnvc8jagf2fnusmdd35rsntgs3j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.383803792512-1r2fbjnvc8jagf2fnusmdd35rsntgs3j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDioAJVG3fOO9K9R_47Of9Wbq9Ld6kE5DA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>383803792512</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>fury.social</string>
+	<key>PROJECT_ID</key>
+	<string>social-831fa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>social-831fa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:383803792512:ios:478933b8f29f9b7e6cda65</string>
+</dict>
+</plist>

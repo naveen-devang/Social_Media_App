@@ -1,0 +1,51 @@
+version: "Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)"
+options: "bdc23deebe861b7fd2f4ec7ebe2f3471a7aa07c0d3851f4cae2a6ecb506d83dd"
+build_start_time: [1687871101, 458061000]
+build_end_time: [1687871103, 63953000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/AsyncAwait/CollectionReference+AsyncAwait.swift"
+  : [1687360585, 431345812]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/AsyncAwait/Firestore+AsyncAwait.swift"
+  : [1687360585, 431403647]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/CodableErrors.swift"
+  : [1687360585, 431518523]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/CodablePassThroughTypes.swift"
+  : [1687360585, 431602525]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/CollectionReference+WriteEncodable.swift"
+  : [1687360585, 431663984]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/DocumentID.swift"
+  : [1687360585, 431758069]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/DocumentReference+Codable.swift"
+  : [1687360585, 431836195]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/DocumentReference+ReadDecodable.swift"
+  : [1687360585, 431903321]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/DocumentReference+WriteEncodable.swift"
+  : [1687360585, 431961322]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/DocumentSnapshot+ReadDecodable.swift"
+  : [1687360585, 432020448]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/EncoderDecoder.swift"
+  : [1687360585, 432087699]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/ExplicitNull.swift"
+  : [1687360585, 432157908]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/FieldValue+Encodable.swift"
+  : [1687360585, 432229909]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/GeoPoint+Codable.swift"
+  : [1687360585, 432285243]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/ServerTimestamp.swift"
+  : [1687360585, 432339244]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/Timestamp+Codable.swift"
+  : [1687360585, 432400745]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/TimestampDecodingStrategy.swift"
+  : [1687360585, 432479246]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/TimestampEncodingStrategy.swift"
+  : [1687360585, 432533247]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/Transaction+WriteEncodable.swift"
+  : [1687360585, 432598248]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/Codable/WriteBatch+WriteEncodable.swift"
+  : [1687360585, 432662249]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/PropertyWrapper/FirestoreQuery.swift"
+  : [1687360585, 432745417]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/PropertyWrapper/FirestoreQueryObservable.swift"
+  : [1687360585, 432818251]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/Firestore/Swift/Source/PropertyWrapper/QueryPredicate.swift"
+  : [1687360585, 432877627]

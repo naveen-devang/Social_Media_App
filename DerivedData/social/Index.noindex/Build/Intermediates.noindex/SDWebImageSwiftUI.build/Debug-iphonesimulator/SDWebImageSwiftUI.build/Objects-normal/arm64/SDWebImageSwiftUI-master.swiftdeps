@@ -1,0 +1,37 @@
+version: "Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)"
+options: "3f80db4df0eec462f046b83a2310225c4eefb4d1700e90cb82c36bf9a6c69ae2"
+build_start_time: [1687871100, 141791000]
+build_end_time: [1687871102, 815292000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/AnimatedImage.swift"
+  : [1687419579, 583701736]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Backports/Backport.swift"
+  : [1687419579, 583810739]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Backports/OnChange.swift"
+  : [1687419579, 583879492]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Backports/Overlay.swift"
+  : [1687419579, 583953952]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Backports/StateObject.swift"
+  : [1687419579, 584030121]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Image.swift"
+  : [1687419579, 584114415]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/ImageManager.swift"
+  : [1687419579, 584242169]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/ImagePlayer.swift"
+  : [1687419579, 584325255]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/ImageViewWrapper.swift"
+  : [1687419579, 584412716]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Indicator/ActivityIndicator.swift"
+  : [1687419579, 584545720]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Indicator/Indicator.swift"
+  : [1687419579, 584624722]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Indicator/ProgressIndicator.swift"
+  : [1687419579, 584694058]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/SDWebImageSwiftUI.swift"
+  : [1687419579, 584884230]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/SwiftUICompatibility.swift"
+  : [1687419579, 584958065]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/Transition/Transition.swift"
+  : [1687419579, 585058027]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/SDWebImageSwiftUI/SDWebImageSwiftUI/Classes/WebImage.swift"
+  : [1687419579, 585205656]

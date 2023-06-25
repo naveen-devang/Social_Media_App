@@ -1,0 +1,471 @@
+Target dependency graph (94 targets)
+SDWebImage in SDWebImage, no dependencies
+SDWebImage in SDWebImage, depends on:
+SDWebImage in SDWebImage (explicit)
+SDWebImageSwiftUI in SDWebImageSwiftUI, depends on:
+SDWebImage in SDWebImage (explicit)
+SDWebImageSwiftUI in SDWebImageSwiftUI, depends on:
+SDWebImageSwiftUI in SDWebImageSwiftUI (explicit)
+SDWebImage in SDWebImage (explicit)
+Firebase in Firebase, no dependencies
+GoogleUtilities-NSData in GoogleUtilities, no dependencies
+GULNSData in GoogleUtilities, depends on:
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+FirebaseCoreInternal in Firebase, depends on:
+GULNSData in GoogleUtilities (explicit)
+FBLPromises in Promises, no dependencies
+FBLPromises in Promises, depends on:
+FBLPromises in Promises (explicit)
+GoogleUtilities-Environment in GoogleUtilities, depends on:
+FBLPromises in Promises (explicit)
+GULEnvironment in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-Logger in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GULLogger in GoogleUtilities, depends on:
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+FirebaseCore in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-Network in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-AppDelegateSwizzler in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+GoogleUtilities-Network in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GULAppDelegateSwizzler in GoogleUtilities, depends on:
+GoogleUtilities-AppDelegateSwizzler in GoogleUtilities (explicit)
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+GoogleUtilities-Network in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher, no dependencies
+GTMSessionFetcherCore in GTMSessionFetcher, depends on:
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAuth in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GULAppDelegateSwizzler in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAuth in Firebase, depends on:
+FirebaseAuth in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GULAppDelegateSwizzler in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAppCheckInterop in Firebase, no dependencies
+FirebaseAuthInterop in Firebase, no dependencies
+FirebaseCoreExtension in Firebase, no dependencies
+FirebaseStorage in Firebase, depends on:
+FirebaseAppCheckInterop in Firebase (explicit)
+FirebaseAuthInterop in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseStorage in Firebase, depends on:
+FirebaseStorage in Firebase (explicit)
+FirebaseAppCheckInterop in Firebase (explicit)
+FirebaseAuthInterop in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+abseil in abseil, no dependencies
+gRPC-CXX-Wrapper in gRPC, depends on:
+abseil in abseil (explicit)
+gRPC-CXX-Target in gRPC, depends on:
+gRPC-CXX-Wrapper in gRPC (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC, depends on:
+gRPC-CXX-Target in gRPC (explicit)
+gRPC-CXX-Wrapper in gRPC (explicit)
+abseil in abseil (explicit)
+nanopb in nanopb, no dependencies
+nanopb in nanopb, depends on:
+nanopb in nanopb (explicit)
+leveldb in leveldb, no dependencies
+leveldb in leveldb, depends on:
+leveldb in leveldb (explicit)
+FirebaseFirestoreTarget in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseSharedSwift in Firebase, no dependencies
+FirebaseFirestoreSwift in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreCombineSwift in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreCombine-Community in Firebase, depends on:
+FirebaseFirestoreCombineSwift in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestore in Firebase, depends on:
+FirebaseFirestoreTarget in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreSwiftTarget in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreSwift in Firebase, depends on:
+FirebaseFirestoreSwiftTarget in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+social in social, depends on:
+SDWebImageSwiftUI in SDWebImageSwiftUI (explicit)
+FirebaseAuth in Firebase (explicit)
+FirebaseStorage in Firebase (explicit)
+FirebaseFirestoreCombine-Community in Firebase (explicit)
+FirebaseFirestore in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+SDWebImage in SDWebImage, no dependencies
+SDWebImage in SDWebImage, depends on:
+SDWebImage in SDWebImage (explicit)
+SDWebImageSwiftUI in SDWebImageSwiftUI, depends on:
+SDWebImage in SDWebImage (explicit)
+SDWebImageSwiftUI in SDWebImageSwiftUI, depends on:
+SDWebImageSwiftUI in SDWebImageSwiftUI (explicit)
+SDWebImage in SDWebImage (explicit)
+Firebase in Firebase, no dependencies
+GoogleUtilities-NSData in GoogleUtilities, no dependencies
+GULNSData in GoogleUtilities, depends on:
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+FirebaseCoreInternal in Firebase, depends on:
+GULNSData in GoogleUtilities (explicit)
+FBLPromises in Promises, no dependencies
+FBLPromises in Promises, depends on:
+FBLPromises in Promises (explicit)
+GoogleUtilities-Environment in GoogleUtilities, depends on:
+FBLPromises in Promises (explicit)
+GULEnvironment in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-Logger in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GULLogger in GoogleUtilities, depends on:
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+FirebaseCore in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-Network in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GoogleUtilities-AppDelegateSwizzler in GoogleUtilities, depends on:
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+GoogleUtilities-Network in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GULAppDelegateSwizzler in GoogleUtilities, depends on:
+GoogleUtilities-AppDelegateSwizzler in GoogleUtilities (explicit)
+GoogleUtilities-Environment in GoogleUtilities (explicit)
+GoogleUtilities-Logger in GoogleUtilities (explicit)
+GoogleUtilities-NSData in GoogleUtilities (explicit)
+GoogleUtilities-Reachability in GoogleUtilities (explicit)
+GoogleUtilities-Network in GoogleUtilities (explicit)
+FBLPromises in Promises (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher, no dependencies
+GTMSessionFetcherCore in GTMSessionFetcher, depends on:
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAuth in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GULAppDelegateSwizzler in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAuth in Firebase, depends on:
+FirebaseAuth in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GULAppDelegateSwizzler in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseAppCheckInterop in Firebase, no dependencies
+FirebaseAuthInterop in Firebase, no dependencies
+FirebaseCoreExtension in Firebase, no dependencies
+FirebaseStorage in Firebase, depends on:
+FirebaseAppCheckInterop in Firebase (explicit)
+FirebaseAuthInterop in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+FirebaseStorage in Firebase, depends on:
+FirebaseStorage in Firebase (explicit)
+FirebaseAppCheckInterop in Firebase (explicit)
+FirebaseAuthInterop in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+GTMSessionFetcherCore in GTMSessionFetcher (explicit)
+abseil in abseil, no dependencies
+gRPC-CXX-Wrapper in gRPC, depends on:
+abseil in abseil (explicit)
+gRPC-CXX-Target in gRPC, depends on:
+gRPC-CXX-Wrapper in gRPC (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC, depends on:
+gRPC-CXX-Target in gRPC (explicit)
+gRPC-CXX-Wrapper in gRPC (explicit)
+abseil in abseil (explicit)
+nanopb in nanopb, no dependencies
+nanopb in nanopb, depends on:
+nanopb in nanopb (explicit)
+leveldb in leveldb, no dependencies
+leveldb in leveldb, depends on:
+leveldb in leveldb (explicit)
+FirebaseFirestoreTarget in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseSharedSwift in Firebase, no dependencies
+FirebaseFirestoreSwift in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreCombineSwift in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreCombine-Community in Firebase, depends on:
+FirebaseFirestoreCombineSwift in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestore in Firebase, depends on:
+FirebaseFirestoreTarget in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreSwiftTarget in Firebase, depends on:
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+FirebaseFirestoreSwift in Firebase, depends on:
+FirebaseFirestoreSwiftTarget in Firebase (explicit)
+Firebase in Firebase (explicit)
+FirebaseCoreInternal in Firebase (explicit)
+FirebaseCore in Firebase (explicit)
+FirebaseCoreExtension in Firebase (explicit)
+FirebaseFirestoreTarget in Firebase (explicit)
+FirebaseSharedSwift in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+GULNSData in GoogleUtilities (explicit)
+GULEnvironment in GoogleUtilities (explicit)
+GULLogger in GoogleUtilities (explicit)
+abseil in abseil (explicit)
+gRPC-C++ in gRPC (explicit)
+nanopb in nanopb (explicit)
+leveldb in leveldb (explicit)
+social in social, depends on:
+SDWebImageSwiftUI in SDWebImageSwiftUI (explicit)
+FirebaseAuth in Firebase (explicit)
+FirebaseStorage in Firebase (explicit)
+FirebaseFirestoreCombine-Community in Firebase (explicit)
+FirebaseFirestore in Firebase (explicit)
+FirebaseFirestoreSwift in Firebase (explicit)
+socialTests in social, depends on:
+social in social (explicit)
+socialTests in social, depends on:
+social in social (explicit)
+socialUITests in social, depends on:
+social in social (explicit)
+socialUITests in social, depends on:
+social in social (explicit)

@@ -1,0 +1,29 @@
+version: "Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)"
+options: "bf1078882def0a97bd964d9516662bbe7091afd713647a1b01d5886399a1f2d0"
+build_start_time: [1687871100, 141783000]
+build_end_time: [1687871101, 371509000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/Heartbeat.swift"
+  : [1687360585, 231582118]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatController.swift"
+  : [1687360585, 231668495]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatLoggingTestUtils.swift"
+  : [1687360585, 231743371]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatStorage.swift"
+  : [1687360585, 231825581]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatsBundle.swift"
+  : [1687360585, 231910457]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatsPayload.swift"
+  : [1687360585, 232000791]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/RingBuffer.swift"
+  : [1687360585, 232077334]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/Storage.swift"
+  : [1687360585, 232144419]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/StorageFactory.swift"
+  : [1687360585, 232221212]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/WeakContainer.swift"
+  : [1687360585, 232276587]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/_ObjC_HeartbeatController.swift"
+  : [1687360585, 232368922]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCore/Internal/Sources/HeartbeatLogging/_ObjC_HeartbeatsPayload.swift"
+  : [1687360585, 232436840]

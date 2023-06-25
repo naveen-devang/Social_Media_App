@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>10</integer>
+	<key>logs</key>
+	<dict>
+		<key>98CE594E-6D86-46D1-8CB7-3FA788E13169</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>98CE594E-6D86-46D1-8CB7-3FA788E13169.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>social project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>social</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build social</string>
+			<key>timeStartedRecording</key>
+			<real>709563814.19965506</real>
+			<key>timeStoppedRecording</key>
+			<real>709563819.63935494</real>
+			<key>title</key>
+			<string>Build social</string>
+			<key>uniqueIdentifier</key>
+			<string>98CE594E-6D86-46D1-8CB7-3FA788E13169</string>
+		</dict>
+		<key>ADA93C21-5F2E-4F12-83C7-12736BF2C36B</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>ADA93C21-5F2E-4F12-83C7-12736BF2C36B.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>social project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>social</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build social</string>
+			<key>timeStartedRecording</key>
+			<real>709563907.18280602</real>
+			<key>timeStoppedRecording</key>
+			<real>709563907.45207703</real>
+			<key>title</key>
+			<string>Build social</string>
+			<key>uniqueIdentifier</key>
+			<string>ADA93C21-5F2E-4F12-83C7-12736BF2C36B</string>
+		</dict>
+		<key>C7A73221-C9EB-4FF7-9887-8C410A048FDB</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>C7A73221-C9EB-4FF7-9887-8C410A048FDB.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>social project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>social</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build social</string>
+			<key>timeStartedRecording</key>
+			<real>709563904.71975803</real>
+			<key>timeStoppedRecording</key>
+			<real>709563905.34874105</real>
+			<key>title</key>
+			<string>Build social</string>
+			<key>uniqueIdentifier</key>
+			<string>C7A73221-C9EB-4FF7-9887-8C410A048FDB</string>
+		</dict>
+		<key>D2A85CFB-F1F2-4256-8DB3-DEC759011DA5</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>D2A85CFB-F1F2-4256-8DB3-DEC759011DA5.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>social project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>social</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Analyze social</string>
+			<key>timeStartedRecording</key>
+			<real>709563835.82959795</real>
+			<key>timeStoppedRecording</key>
+			<real>709563862.69718003</real>
+			<key>title</key>
+			<string>Analyze social</string>
+			<key>uniqueIdentifier</key>
+			<string>D2A85CFB-F1F2-4256-8DB3-DEC759011DA5</string>
+		</dict>
+		<key>F0A0223C-127F-43DF-8914-CBE8344B7389</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>F0A0223C-127F-43DF-8914-CBE8344B7389.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>social project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>social</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build social</string>
+			<key>timeStartedRecording</key>
+			<real>709415272.03448701</real>
+			<key>timeStoppedRecording</key>
+			<real>709415272.95828998</real>
+			<key>title</key>
+			<string>Build social</string>
+			<key>uniqueIdentifier</key>
+			<string>F0A0223C-127F-43DF-8914-CBE8344B7389</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

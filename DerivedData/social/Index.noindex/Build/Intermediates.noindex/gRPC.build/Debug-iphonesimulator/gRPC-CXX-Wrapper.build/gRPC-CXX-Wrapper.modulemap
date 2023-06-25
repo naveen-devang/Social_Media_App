@@ -1,0 +1,4 @@
+module gRPC_CXX_Wrapper {
+umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/grpc-binary/gRPC-CXX-Wrapper/include"
+export *
+}

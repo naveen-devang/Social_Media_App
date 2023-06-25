@@ -1,0 +1,58 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : true,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "c9d8aa3e33355126259befbf721eea85f9ab4438394faaaabd417209b4aaa4e1"
+    }
+  ],
+  "containerPath" : "/Users/naveendevang/Desktop/Social/social/social.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "indexbuild",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator16.4",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Index.noindex/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Index.noindex/Build/Products",
+      "derivedDataPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Index.noindex/PrecompiledHeaders",
+      "indexRegularBuildIntermediatesPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Build/Intermediates.noindex",
+      "indexRegularBuildProductsPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Build/Products",
+      "pchPath" : "/Users/naveendevang/Desktop/Social/social/DerivedData/social/Index.noindex/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

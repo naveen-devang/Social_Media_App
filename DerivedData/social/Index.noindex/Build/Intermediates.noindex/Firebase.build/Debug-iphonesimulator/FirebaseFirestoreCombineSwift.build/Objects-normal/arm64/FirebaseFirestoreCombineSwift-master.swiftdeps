@@ -1,0 +1,17 @@
+version: "Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)"
+options: "33000da9161b67339ebae63c22e5ac9d578eb66db82ef166aba13bdf00d63dde"
+build_start_time: [1687871103, 141893000]
+build_end_time: [1687871103, 252614000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/CollectionReference+Combine.swift"
+  : [1687360585, 227156969]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/DocumentReference+Combine.swift"
+  : [1687360585, 227232637]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/Firestore+Combine.swift"
+  : [1687360585, 227311346]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/Query+Combine.swift"
+  : [1687360585, 227382056]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/Transaction+Combine.swift"
+  : [1687360585, 227459682]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseCombineSwift/Sources/Firestore/WriteBatch+Combine.swift"
+  : [1687360585, 227515183]

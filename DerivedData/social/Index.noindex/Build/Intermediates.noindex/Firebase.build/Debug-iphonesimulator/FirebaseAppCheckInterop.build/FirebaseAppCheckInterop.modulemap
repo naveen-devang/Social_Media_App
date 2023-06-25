@@ -1,0 +1,4 @@
+module FirebaseAppCheckInterop {
+umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-dokuvkzlpyiyugevtxchtkjgohtl/SourcePackages/checkouts/firebase-ios-sdk/FirebaseAppCheck/Interop"
+export *
+}
