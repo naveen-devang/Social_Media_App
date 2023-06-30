@@ -2,7 +2,16 @@
 
 **Similar to Instagram, you can share photos and post your thoughts. Runs in Real-time with the help of Google Firebase and SwiftUI**
 
-![My animated logo](social/Images/Home.png)
+![Login Page](social/Images/loginpage.png)
+![SignUp Page](social/Images/signup.png)
+![Home Page](social/Images/Home.png)
+![New Post](social/Images/NewPost.png)
+![New Post with Image](social/Images/NewPost_w_images.png)
+![Profile Page with Delete Account and Logout Option](social/Images/deleteAcc.png)
+![Dislike Post in Post's Tab](social/Images/dislikePosts.png)
+![Dislike Post in Profile Tab](social/Images/dislikeProfile.png)
+![Liked Post](social/Images/likePosts.png)
+![Search Other Users](social/Images/usersearch.png)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/25423296/163456776-7f95b81a-f1ed-45f7-b7ab-8fa810d529fa.png">
