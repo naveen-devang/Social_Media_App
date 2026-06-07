@@ -1,4 +1,0 @@
-module FirebaseRemoteConfig {
-umbrella header "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseRemoteConfig/Sources/Public/FirebaseRemoteConfig/FirebaseRemoteConfig.h"
-export *
-}

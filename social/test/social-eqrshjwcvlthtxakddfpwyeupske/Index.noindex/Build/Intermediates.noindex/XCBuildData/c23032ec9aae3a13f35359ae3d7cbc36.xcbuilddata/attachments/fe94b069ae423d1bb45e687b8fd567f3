@@ -1,4 +1,0 @@
-module GoogleUtilities_NSData {
-umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/GoogleUtilities/GoogleUtilities/NSData+zlib/Public"
-export *
-}

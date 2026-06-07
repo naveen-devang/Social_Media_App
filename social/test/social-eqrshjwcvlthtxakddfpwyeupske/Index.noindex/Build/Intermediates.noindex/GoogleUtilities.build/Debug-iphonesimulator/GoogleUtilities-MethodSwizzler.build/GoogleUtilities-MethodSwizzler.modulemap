@@ -1,4 +1,0 @@
-module GoogleUtilities_MethodSwizzler {
-umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/GoogleUtilities/GoogleUtilities/MethodSwizzler/Public"
-export *
-}

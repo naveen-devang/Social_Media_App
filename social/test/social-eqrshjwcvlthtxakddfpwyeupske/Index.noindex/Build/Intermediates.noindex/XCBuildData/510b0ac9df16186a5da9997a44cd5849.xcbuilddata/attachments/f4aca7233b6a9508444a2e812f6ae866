@@ -1,4 +1,0 @@
-module GoogleUtilities_ISASwizzler {
-umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/GoogleUtilities/GoogleUtilities/ISASwizzler/Public"
-export *
-}
