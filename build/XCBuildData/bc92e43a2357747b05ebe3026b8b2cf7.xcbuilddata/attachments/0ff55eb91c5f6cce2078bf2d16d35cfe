@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests-master.dia",
+    "emit-module-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests-master.swiftdeps"
+  },
+  "/Users/naveendevang/Downloads/Social_Media_App/socialTests/socialTests.swift" : {
+    "const-values" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.swiftconstvalues",
+    "dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.d",
+    "diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.dia",
+    "index-unit-output-path" : "/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.o",
+    "llvm-bc" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.bc",
+    "object" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.o",
+    "swift-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests.swiftdeps",
+    "swiftmodule" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialTests.build/Objects-normal/arm64/socialTests~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,4 @@
+module FirebaseSessionsObjC {
+umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/SourcesObjC"
+export *
+}

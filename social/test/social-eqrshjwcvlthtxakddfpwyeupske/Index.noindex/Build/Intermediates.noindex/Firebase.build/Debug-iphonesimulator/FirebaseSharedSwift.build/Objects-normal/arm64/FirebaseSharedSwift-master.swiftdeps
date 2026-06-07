@@ -1,0 +1,9 @@
+version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
+options: "d87e06a5ec55a48cd091122518122c0079801710b57cc806b2e18b1c8ea65b84"
+build_start_time: [1718011730, 176590000]
+build_end_time: [1718011736, 676506000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSharedSwift/Sources/FirebaseRemoteConfigValueDecoding.swift"
+  : [1706673614, 712389711]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
+  : [1706673614, 712681950]

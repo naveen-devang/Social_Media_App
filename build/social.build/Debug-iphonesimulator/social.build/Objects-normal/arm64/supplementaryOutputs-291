@@ -1,0 +1,24 @@
+"/Users/naveendevang/Downloads/Social_Media_App/social/View/MainView/OtherUserVehicleDetailView.swift":
+  diagnostics: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/OtherUserVehicleDetailView.dia"
+  object: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/OtherUserVehicleDetailView.o"
+  swift-dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/OtherUserVehicleDetailView.swiftdeps"
+  const-values: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/OtherUserVehicleDetailView.swiftconstvalues"
+  dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/OtherUserVehicleDetailView.d"
+"/Users/naveendevang/Downloads/Social_Media_App/social/View/MainView/VehicleDetailView.swift":
+  object: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/VehicleDetailView.o"
+  dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/VehicleDetailView.d"
+  const-values: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/VehicleDetailView.swiftconstvalues"
+  swift-dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/VehicleDetailView.swiftdeps"
+  diagnostics: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/VehicleDetailView.dia"
+"/Users/naveendevang/Downloads/Social_Media_App/social/View/MainView/CreateNewPost.swift":
+  const-values: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/CreateNewPost.swiftconstvalues"
+  object: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/CreateNewPost.o"
+  swift-dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/CreateNewPost.swiftdeps"
+  diagnostics: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/CreateNewPost.dia"
+  dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/CreateNewPost.d"
+"/Users/naveendevang/Downloads/Social_Media_App/social/View/NewsView/NewsView.swift":
+  diagnostics: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/NewsView.dia"
+  const-values: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/NewsView.swiftconstvalues"
+  object: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/NewsView.o"
+  dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/NewsView.d"
+  swift-dependencies: "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/social.build/Objects-normal/arm64/NewsView.swiftdeps"

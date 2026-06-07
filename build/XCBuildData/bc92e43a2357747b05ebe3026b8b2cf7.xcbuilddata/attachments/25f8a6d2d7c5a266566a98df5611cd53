@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests-master.dia",
+    "emit-module-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests-master.swiftdeps"
+  },
+  "/Users/naveendevang/Downloads/Social_Media_App/socialUITests/socialUITests.swift" : {
+    "const-values" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.swiftconstvalues",
+    "dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.d",
+    "diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.dia",
+    "index-unit-output-path" : "/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.o",
+    "llvm-bc" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.bc",
+    "object" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.o",
+    "swift-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests.swiftdeps",
+    "swiftmodule" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITests~partial.swiftmodule"
+  },
+  "/Users/naveendevang/Downloads/Social_Media_App/socialUITests/socialUITestsLaunchTests.swift" : {
+    "const-values" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.swiftconstvalues",
+    "dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.d",
+    "diagnostics" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.dia",
+    "index-unit-output-path" : "/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.o",
+    "llvm-bc" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.bc",
+    "object" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.o",
+    "swift-dependencies" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests.swiftdeps",
+    "swiftmodule" : "/Users/naveendevang/Downloads/Social_Media_App/build/social.build/Debug-iphonesimulator/socialUITests.build/Objects-normal/arm64/socialUITestsLaunchTests~partial.swiftmodule"
+  }
+}

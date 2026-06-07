@@ -1,0 +1,4 @@
+module FirebaseAnalyticsOnDeviceConversionTarget {
+umbrella "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseAnalyticsOnDeviceConversionWrapper/include"
+export *
+}

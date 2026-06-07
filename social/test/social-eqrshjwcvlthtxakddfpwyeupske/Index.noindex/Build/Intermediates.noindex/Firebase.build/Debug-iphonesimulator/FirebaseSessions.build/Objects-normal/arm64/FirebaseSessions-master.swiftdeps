@@ -1,0 +1,57 @@
+version: "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)"
+options: "4e1ae0477839c789378b3796516ec2c67eef469e2bc4ca3cd4086541230cb115"
+build_start_time: [1718011732, 131564000]
+build_end_time: [1718011736, 652007000]
+inputs:
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/ApplicationInfo.swift"
+  : [1706673614, 704189368]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Development/DevEventConsoleLogger.swift"
+  : [1706673614, 704334779]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Development/NanoPB+CustomStringConvertible.swift"
+  : [1706673614, 704445524]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/EventGDTLogger.swift"
+  : [1706673614, 704545604]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/FirebaseSessions.swift"
+  : [1706673614, 704724180]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/FirebaseSessionsError.swift"
+  : [1706673614, 704803469]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/GoogleDataTransport+GoogleDataTransportProtocol.swift"
+  : [1706673614, 704892465]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Installations+InstallationsProtocol.swift"
+  : [1706673614, 704979086]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Logger.swift"
+  : [1706673614, 705058333]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/NetworkInfo.swift"
+  : [1706673614, 705137914]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Public/SessionsDependencies.swift"
+  : [1706673614, 705271408]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Public/SessionsProvider.swift"
+  : [1706673614, 705358363]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Public/SessionsSubscriber.swift"
+  : [1706673614, 705452735]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/SessionCoordinator.swift"
+  : [1706673614, 705554772]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/SessionGenerator.swift"
+  : [1706673614, 705665476]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/SessionInitiator.swift"
+  : [1706673614, 705745056]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/SessionStartEvent.swift"
+  : [1706673614, 705858927]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/LocalOverrideSettings.swift"
+  : [1706673614, 705993713]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/RemoteSettings.swift"
+  : [1706673614, 706113375]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SDKDefaultSettings.swift"
+  : [1706673614, 706210205]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SessionsSettings.swift"
+  : [1706673614, 706388198]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SettingsCacheClient.swift"
+  : [1706673614, 706471361]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SettingsDownloadClient.swift"
+  : [1706673614, 706564982]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SettingsProtocol.swift"
+  : [1706673614, 706661520]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Settings/SettingsProvider.swift"
+  : [1706673614, 706745434]
+  ? "/Users/naveendevang/Library/Developer/Xcode/DerivedData/social-eqrshjwcvlthtxakddfpwyeupske/SourcePackages/checkouts/firebase-ios-sdk/FirebaseSessions/Sources/Time.swift"
+  : [1706673614, 706848013]
