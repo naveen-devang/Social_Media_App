@@ -14,7 +14,7 @@ import Appwrite
     
     func setupBookmarkListener(userUID: String, postID: String) {
         // Remove existing listener if any
-        Task { try? await subscription?.close() }
+        subscription?.unsubscribe()
         
         Task {
             do {
@@ -40,10 +40,10 @@ import Appwrite
                 
                 // Set up Appwrite Realtime listener
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.bookmark_folders.documents"
-                subscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                subscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
+                    if response.events.contains(where: { $0.contains(".delete") }) {
                         guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
                         Task { @MainActor in
                             self.folders.removeAll { $0.id == deletedId }
@@ -59,7 +59,7 @@ import Appwrite
                        var updatedFolder = try? JSONDecoder().decode(BookmarkFolder.self, from: data) {
                         
                         guard updatedFolder.createdBy == userUID else { return }
-                        updatedFolder.id = payload["$id"] as? String ?? updatedFolder.id
+                        updatedFolder.id = payload["$id"] as? String
                         
                         Task { @MainActor in
                             if let idx = self.folders.firstIndex(where: { $0.id == updatedFolder.id }) {
@@ -81,7 +81,7 @@ import Appwrite
     }
     
     func removeListener() {
-        Task { try? await subscription?.close() }
+        subscription?.unsubscribe()
         subscription = nil
     }
     

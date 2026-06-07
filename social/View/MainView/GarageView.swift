@@ -6,102 +6,61 @@
 //
 
 import SwiftUI
+
 import Combine
 import SDWebImageSwiftUI
-import Appwrite
 
 class GarageViewModel: ObservableObject {
     @Published var vehicles: [Vehicle] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private var realtimeSubscription: RealtimeSubscription?
-    @AppStorage("user_UID") private var currentUserUID: String = ""
+    private var listenerRegistration: ListenerRegistration?
+    private let db = Firestore.firestore()
     
     deinit {
-        realtimeSubscription = nil
+        listenerRegistration?.remove()
     }
     
     func fetchUserVehicles(for userUID: String?) {
         isLoading = true
-        Task { try? await realtimeSubscription?.close() }
         
-        let targetUID: String
+        listenerRegistration?.remove()
+        
+        let query: Query
         if let userUID = userUID {
-            targetUID = userUID
+            query = db.collection("Vehicles")
+                .whereField("ownerUID", isEqualTo: userUID)
+                .whereField("isActive", isEqualTo: true)
         } else {
-            guard !currentUserUID.isEmpty else {
+            guard let currentUserUID = Auth.auth().currentUser?.uid else {
                 self.errorMessage = "User not logged in"
                 self.isLoading = false
                 return
             }
-            targetUID = currentUserUID
+            query = db.collection("Vehicles")
+                .whereField("ownerUID", isEqualTo: currentUserUID)
+                .whereField("isActive", isEqualTo: true)
         }
         
-        Task {
-            do {
-                // Initial Fetch
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    queries: [
-                        Query.equal("ownerUID", value: targetUID),
-                        Query.equal("isActive", value: true),
-                        Query.limit(100)
-                    ],
-                    nestedType: Vehicle.self
-                )
-                
-                await MainActor.run {
-                    self.vehicles = result.documents.map { doc -> Vehicle in
-                        var vehicle = doc.data
-                        vehicle.id = doc.id
-                        return vehicle
-                    }.sorted(by: { $0.manufacturer < $1.manufacturer })
-                    self.isLoading = false
-                }
-                
-                // Realtime subscription
-                let channel = "databases.\(AppwriteManager.shared.databaseId).collections.vehicles.documents"
-                realtimeSubscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
-                    guard let self = self else { return }
-                    
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
-                        guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
-                        Task { @MainActor in
-                            self.vehicles.removeAll { $0.id == deletedId }
-                        }
-                        return
-                    }
-                    
-                    guard let payload = response.payload else { return }
-                    
-                    if let data = try? JSONSerialization.data(withJSONObject: payload, options: []),
-                       var updatedVehicle = try? JSONDecoder().decode(Vehicle.self, from: data) {
-                        
-                        guard updatedVehicle.ownerUID == targetUID else { return }
-                        updatedVehicle.id = payload["$id"] as? String
-                        
-                        Task { @MainActor in
-                            if !updatedVehicle.isActive {
-                                self.vehicles.removeAll { $0.id == updatedVehicle.id }
-                            } else {
-                                if let idx = self.vehicles.firstIndex(where: { $0.id == updatedVehicle.id }) {
-                                    self.vehicles[idx] = updatedVehicle
-                                } else {
-                                    self.vehicles.append(updatedVehicle)
-                                }
-                            }
-                            self.vehicles.sort(by: { $0.manufacturer < $1.manufacturer })
-                        }
-                    }
-                }
-            } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                    self.errorMessage = "Error fetching vehicles: \(error.localizedDescription)"
-                }
+        listenerRegistration = query.addSnapshotListener { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            
+            self.isLoading = false
+            
+            if let error = error {
+                self.errorMessage = "Error fetching vehicles: \(error.localizedDescription)"
+                return
             }
+            
+            guard let documents = querySnapshot?.documents else {
+                self.errorMessage = "No documents found"
+                return
+            }
+            
+            self.vehicles = documents.compactMap { document -> Vehicle? in
+                try? document.data(as: Vehicle.self)
+            }.sorted(by: { $0.manufacturer < $1.manufacturer })
         }
     }
 }
@@ -111,8 +70,6 @@ struct GarageView: View {
     @State private var isAddingVehicle = false
     let userUID: String?
     let showAddButton: Bool
-    
-    @AppStorage("user_UID") private var currentUserUID: String = ""
     
     init(userUID: String? = nil, showAddButton: Bool = true) {
         self.userUID = userUID
@@ -124,7 +81,7 @@ struct GarageView: View {
             vehicleList
         }
         .overlay(
-            showAddButton ? addVehicleButton : nil,
+            showAddButton ? addVehicleButton : nil, // Only show the add button if showAddButton is true
             alignment: .bottomTrailing
         )
         .sheet(isPresented: $isAddingVehicle) {
@@ -145,7 +102,7 @@ struct GarageView: View {
         ScrollView {
             LazyVStack(spacing: 10) {
                 ForEach(viewModel.vehicles) { vehicle in
-                    if currentUserUID == vehicle.ownerUID {
+                    if let currentUserUID = Auth.auth().currentUser?.uid, currentUserUID == vehicle.ownerUID {
                         NavigationLink(destination: VehicleDetailView(vehicle: vehicle)) {
                             VehicleRowView(vehicle: vehicle)
                         }
@@ -215,6 +172,7 @@ struct VehicleRowView: View {
     }
     
     private var vehicleInfo: some View {
+        // This part remains unchanged
         VStack(alignment: .leading, spacing: 4) {
             Text("\(NumberFormatter.localizedString(from: NSNumber(value: vehicle.year), number: .none)) \(vehicle.manufacturer) \(vehicle.model)")
                 .font(.headline)
@@ -229,4 +187,3 @@ struct AlertItem: Identifiable {
     let id = UUID()
     let message: String
 }
-

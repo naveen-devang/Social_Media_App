@@ -6,7 +6,8 @@
 //
 
 import SwiftUI
-import Appwrite
+
+
 
 // MARK: - Form Section Enum
 enum FormSection: String, CaseIterable {
@@ -84,39 +85,26 @@ class UploadCarListingViewModel {
     let drivetrainTypes = ["FWD", "RWD", "AWD", "4WD"]
     let sellerTypes = ["Private Owner", "Dealer", "Broker", "Other"]
     
-    // Upload Images to Appwrite Storage
+    // Upload Images to Firebase Storage
     func uploadImages(imageDatas: [Data], userUID: String) async throws -> (urls: [URL], ids: [String]) {
         var imageUrls: [URL] = []
         var imageReferenceIds: [String] = []
         
         for imageData in imageDatas {
-            let imageReferenceId = UUID().uuidString.lowercased()
-            let fileId = "vehicle_\(imageReferenceId)"
-            let inputFile = InputFile.fromData(imageData, filename: "car.jpg", mimeType: "image/jpeg")
-            
-            let file = try await AppwriteManager.shared.storage.createFile(
-                bucketId: AppwriteManager.shared.bucketId,
-                fileId: fileId,
-                file: inputFile
-            )
-            
-            let downloadURLString = AppwriteManager.shared.getFileViewURL(fileId: file.id)
-            if let downloadURL = URL(string: downloadURLString) {
-                imageUrls.append(downloadURL)
-                imageReferenceIds.append(imageReferenceId)
-            }
+            let imageReferenceId = "\(userUID)\(Date().timeIntervalSince1970)"
+            let storageRef = Storage.storage().reference().child("CarListing_Images").child(imageReferenceId)
+            let _ = try await storageRef.putDataAsync(imageData)
+            let downloadURL = try await storageRef.downloadURL()
+            imageUrls.append(downloadURL)
+            imageReferenceIds.append(imageReferenceId)
         }
         
         return (urls: imageUrls, ids: imageReferenceIds)
     }
     
-    // Create document in Appwrite
-    func createDocumentAtAppwrite(_ carListing: CarListing) async throws {
-        _ = try await AppwriteManager.shared.databases.createDocument(
-            databaseId: AppwriteManager.shared.databaseId,
-            collectionId: AppwriteManager.shared.carListingsCollectionId,
-            documentId: ID.unique(),
-            data: carListing.toDictionary
-        )
+    // Create document in Firestore
+    func createDocumentAtFirebase(_ carListing: CarListing) async throws {
+        let doc = Firestore.firestore().collection("CarListings").document()
+        try doc.setData(from: carListing)
     }
 }

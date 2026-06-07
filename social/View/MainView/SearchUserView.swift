@@ -2,11 +2,9 @@
 //  SearchUserView.swift
 //  social
 //
-//  Created by デバン・ナビーン on 25/06/23.
-//
 
 import SwiftUI
-import FirebaseFirestore
+import Appwrite
 
 struct SearchUserView: View {
     /// - View Properties
@@ -30,7 +28,7 @@ struct SearchUserView: View {
         .navigationTitle("Search Users")
         .searchable(text: $searchText)
         .onSubmit(of: .search, {
-            /// - Fetch User From Firebase
+            /// - Fetch User From Appwrite
             Task{await searchUser()}
         })
         .onChange(of: searchText, perform: { newValue in
@@ -42,15 +40,21 @@ struct SearchUserView: View {
     
     func searchUser()async{
         do{
+            let result = try await AppwriteManager.shared.databases.listDocuments(
+                databaseId: AppwriteManager.shared.databaseId,
+                collectionId: AppwriteManager.shared.usersCollectionId,
+                queries: [
+                    Query.startsWith("username", searchText)
+                ],
+                nestedType: User.self
+            )
             
-            let documents = try await Firestore.firestore().collection("Users")
-                .whereField("username", isGreaterThanOrEqualTo: searchText)
-                .whereField("username", isLessThanOrEqualTo: "\(searchText)\u{f8ff}")
-                .getDocuments()
-            
-            let users = try documents.documents.compactMap{ doc -> User? in
-                try doc.data(as: User.self)
+            let users = result.documents.map { doc -> User in
+                var u = doc.data
+                u.id = doc.id
+                return u
             }
+            
             /// - UI Must Be Updated on Main Thread
             await MainActor.run(body: {
                 fetchedUsers = users

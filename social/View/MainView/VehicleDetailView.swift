@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
-import Appwrite
 
 
 
@@ -162,8 +161,8 @@ struct PostThumbnail: View {
     
     var body: some View {
         VStack {
-            if let imageURL = post.imageURL {
-                WebImage(url: imageURL)
+            if let firstImageURL = post.imageURLs.first {
+                WebImage(url: firstImageURL)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 100, height: 100)
@@ -189,32 +188,21 @@ class VehicleDetailViewModel: ObservableObject {
     
     func fetchTaggedPosts() {
         guard let vehicleID = vehicle.id else { return }
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.postsCollectionId,
-                    queries: [
-                        Query.contains("taggedVehicleIDs", value: [vehicleID])
-                    ],
-                    nestedType: Post.self
-                )
-                await MainActor.run {
-                    self.taggedPosts = result.documents.map { doc -> Post in
-                        var post = doc.data
-                        post.id = doc.id
-                        return post
-                    }
+        
+        let db = Firestore.firestore()
+        db.collection("Posts")
+            .whereField("taggedVehicleIDs", arrayContains: vehicleID)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching tagged posts: \(error.localizedDescription)")
+                    return
                 }
-            } catch {
-                print("Error fetching tagged posts: \(error.localizedDescription)")
+                
+                self.taggedPosts = snapshot?.documents.compactMap { document -> Post? in
+                    try? document.data(as: Post.self)
+                } ?? []
             }
-        }
     }
-}
-
-struct ImageIndex: Identifiable {
-    let id: Int
 }
 
 struct ImageCarousel: View {
@@ -239,20 +227,10 @@ struct ImageCarousel: View {
             .padding(.horizontal, 5)
         }
         .fullScreenCover(item: $selectedImageIndex) { imageIndex in
-            ZStack {
-                Color.black.ignoresSafeArea()
-                TabView(selection: .constant(imageIndex.id)) {
-                    ForEach(Array(imageUrls.enumerated()), id: \.offset) { idx, url in
-                        AsyncImage(url: URL(string: url)) { image in
-                            image.resizable().scaledToFit()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .tag(idx)
-                    }
-                }
-                .tabViewStyle(.page)
-            }
+            FullScreenImageViewer(
+                imageURLs: imageUrls.compactMap { URL(string: $0) },
+                startIndex: imageIndex.id
+            )
         }
     }
 }
@@ -559,24 +537,18 @@ struct EditVehicleView: View {
             return
         }
 
-        Task {
-            do {
-                _ = try await AppwriteManager.shared.databases.updateDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    documentId: vehicleID,
-                    data: [
-                        "isActive": false,
-                        "ownerUID": ""
-                    ]
-                )
-                await MainActor.run {
-                    isPresented = false
-                }
-            } catch {
-                await MainActor.run {
-                    showError(message: "Error removing vehicle from garage: \(error.localizedDescription)")
-                }
+        let db = Firestore.firestore()
+        let vehicleRef = db.collection("Vehicles").document(vehicleID)
+
+        // Instead of deleting, update the isActive field to false
+        vehicleRef.updateData([
+            "isActive": false,
+            "ownerUID": ""  // Remove the owner association
+        ]) { error in
+            if let error = error {
+                showError(message: "Error removing vehicle from garage: \(error.localizedDescription)")
+            } else {
+                isPresented = false
             }
         }
     }
@@ -585,6 +557,20 @@ struct EditVehicleView: View {
         errorMessage = message
         showError = true
     }
+}
+
+struct VehicleEdit: Codable, Identifiable {
+    let id: String
+    let editorUID: String
+    let editorName: String
+    let editedFields: [EditedField]
+    let timestamp: Timestamp
+}
+
+struct EditedField: Codable, Hashable {
+    let fieldName: String
+    let previousValue: String
+    let newValue: String
 }
 
 class EditVehicleViewModel: ObservableObject {
@@ -641,17 +627,8 @@ class EditVehicleViewModel: ObservableObject {
         selectedImages.removeAll { $0 == image }
     }
     
-    private func getFileIdFromURL(_ urlString: String) -> String? {
-        guard let url = URL(string: urlString) else { return nil }
-        let pathComponents = url.pathComponents
-        if let filesIndex = pathComponents.firstIndex(of: "files"), filesIndex + 1 < pathComponents.count {
-            return pathComponents[filesIndex + 1]
-        }
-        return nil
-    }
-    
     func updateVehicle(completion: @escaping (Bool) -> Void) {
-        guard let yearInt = Int(year), let mileageInt = Int(mileage) else {
+        guard let _ = Int(year), let _ = Int(mileage) else {
             self.errorMessage = "Invalid year or mileage"
             self.showErrorAlert = true
             completion(false)
@@ -664,6 +641,9 @@ class EditVehicleViewModel: ObservableObject {
             completion(false)
             return
         }
+        
+        let db = Firestore.firestore()
+        let vehicleRef = db.collection("Vehicles").document(vehicleID)
         
         // Track edited fields
         var editedFields: [EditedField] = []
@@ -687,13 +667,13 @@ class EditVehicleViewModel: ObservableObject {
             updatedData["model"] = model
         }
 
-        if originalVehicle.year != yearInt {
+        if originalVehicle.year != Int(year) {
             editedFields.append(EditedField(
                 fieldName: "Year",
                 previousValue: String(originalVehicle.year),
                 newValue: year
             ))
-            updatedData["year"] = yearInt
+            updatedData["year"] = Int(year)
         }
 
         if originalVehicle.interiorColor != interiorColor {
@@ -723,13 +703,13 @@ class EditVehicleViewModel: ObservableObject {
             updatedData["vinNumber"] = vinNumber
         }
 
-        if originalVehicle.mileage != mileageInt {
+        if originalVehicle.mileage != Int(mileage) {
             editedFields.append(EditedField(
                 fieldName: "Mileage",
                 previousValue: String(originalVehicle.mileage),
                 newValue: mileage
             ))
-            updatedData["mileage"] = mileageInt
+            updatedData["mileage"] = Int(mileage)
         }
 
         if originalVehicle.engine != engine {
@@ -750,119 +730,139 @@ class EditVehicleViewModel: ObservableObject {
             updatedData["description"] = description
         }
         
-        Task {
-            do {
-                // 1. Upload new images to profile-images bucket
-                var uploadedUrls: [String] = []
-                for (index, image) in selectedImages.enumerated() {
-                    guard let imageData = image.jpegData(compressionQuality: 0.8) else { continue }
-                    let imageRefId = UUID().uuidString
-                    let fileId = "vehicle_\(imageRefId)"
-                    
-                    _ = try await AppwriteManager.shared.storage.createFile(
-                        bucketId: AppwriteManager.shared.bucketId,
-                        fileId: fileId,
-                        file: InputFile.fromData(imageData, filename: "\(fileId).jpg", mimeType: "image/jpeg")
-                    )
-                    
-                    let downloadUrl = AppwriteManager.shared.getFileViewURL(fileId: fileId)
-                    uploadedUrls.append(downloadUrl)
+        vehicleRef.updateData(updatedData) { [weak self] error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.errorMessage = "Error updating vehicle: \(error.localizedDescription)"
+                self.showErrorAlert = true
+                completion(false)
+                return
+            }
+            
+            // Record edit history if fields were changed
+            if !editedFields.isEmpty {
+                self.recordEditHistory(documentRef: vehicleRef, editedFields: editedFields)
+            }
+            
+            self.updateImages(for: vehicleRef, completion: completion)
+        }
+    }
+    
+    private func updateImages(for documentRef: DocumentReference, completion: @escaping (Bool) -> Void) {
+        let group = DispatchGroup()
+
+        // Remove images
+        for imageUrl in removedImageUrls {
+            group.enter()
+            Storage.storage().reference(forURL: imageUrl).delete { error in
+                if let error = error {
+                    print("Error deleting image: \(error.localizedDescription)")
                 }
-                
-                // 2. Remove deleted images from Appwrite Storage
-                for imageUrl in removedImageUrls {
-                    if let fileId = getFileIdFromURL(imageUrl) {
-                        try? await AppwriteManager.shared.storage.deleteFile(
-                            bucketId: AppwriteManager.shared.bucketId,
-                            fileId: fileId
-                        )
-                    }
-                }
-                
-                let finalImageUrls = existingImageUrls + uploadedUrls
-                updatedData["imageUrls"] = finalImageUrls
-                
-                // 3. Update database document
-                _ = try await AppwriteManager.shared.databases.updateDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    documentId: vehicleID,
-                    data: updatedData
-                )
-                
-                // 4. Record edit history if fields were changed
-                if !editedFields.isEmpty {
-                    self.recordEditHistory(vehicleID: vehicleID, editedFields: editedFields)
-                }
-                
-                await MainActor.run {
-                    self.existingImageUrls = finalImageUrls
-                    self.selectedImages = []
-                    self.removedImageUrls = []
-                    completion(true)
-                }
-            } catch {
-                await MainActor.run {
-                    self.errorMessage = "Error updating vehicle: \(error.localizedDescription)"
-                    self.showErrorAlert = true
+                group.leave()
+            }
+        }
+
+        // Upload new images
+        for (index, image) in selectedImages.enumerated() {
+            group.enter()
+            uploadImage(image, index: index, to: documentRef) {
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            documentRef.updateData([
+                "imageUrls": self.existingImageUrls
+            ]) { error in
+                if let error = error {
+                    print("Error updating document with imageUrls: \(error.localizedDescription)")
                     completion(false)
+                } else {
+                    print("Vehicle images updated successfully")
+                    completion(true)
                 }
             }
         }
     }
     
-    private func recordEditHistory(vehicleID: String, editedFields: [EditedField]) {
-        getUserName { [weak self] username in
-            guard let self = self else { return }
+    private func uploadImage(_ image: UIImage, index: Int, to documentRef: DocumentReference, completion: @escaping () -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion()
+            return
+        }
+
+        let imageName = "\(UUID().uuidString)_\(index)"
+        let storageRef = Storage.storage().reference().child("VehicleImages/\(imageName)")
+
+        storageRef.putData(imageData, metadata: nil) { metadata, error in
+            guard metadata != nil else {
+                print("Error uploading image: \(error?.localizedDescription ?? "Unknown error")")
+                completion()
+                return
+            }
+
+            storageRef.downloadURL { url, error in
+                guard let downloadURL = url else {
+                    print("Error getting download URL: \(error?.localizedDescription ?? "Unknown error")")
+                    completion()
+                    return
+                }
+
+                self.existingImageUrls.append(downloadURL.absoluteString)
+                completion()
+            }
+        }
+    }
+    
+    private func recordEditHistory(documentRef: DocumentReference, editedFields: [EditedField]) {
+        _ = Firestore.firestore()
+        getUserName { [self] username in
+            let editHistoryRef = documentRef.collection("EditHistory").document()
             
             let editEntry = VehicleEdit(
-                id: nil,
-                vehicleID: vehicleID,
-                editorUID: self.userUID,
+                id: editHistoryRef.documentID,
+                editorUID: userUID,
                 editorName: username,
                 editedFields: editedFields,
-                timestamp: Date()
+                timestamp: Timestamp(date: Date())
             )
             
-            Task {
-                do {
-                    _ = try await AppwriteManager.shared.databases.createDocument(
-                        databaseId: AppwriteManager.shared.databaseId,
-                        collectionId: "edit_history",
-                        documentId: ID.unique(),
-                        data: editEntry.toDictionary
-                    )
-                } catch {
-                    print("Error recording edit history: \(error.localizedDescription)")
-                }
+            do {
+                try editHistoryRef.setData(from: editEntry)
+            } catch {
+                print("Error recording edit history: \(error.localizedDescription)")
             }
         }
     }
     
     private func getUserName(completion: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        
+        // Check if userUID is not empty
         guard !userUID.isEmpty else {
             completion("Unknown User")
             return
         }
         
-        Task {
+        db.collection("Users").document(userUID).getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+                completion("Unknown User")
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                print("User document not found")
+                completion("Unknown User")
+                return
+            }
+            
             do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "users",
-                    queries: [
-                        Query.equal("userUID", value: userUID),
-                        Query.limit(1)
-                    ],
-                    nestedType: User.self
-                )
-                
-                if let doc = result.documents.first {
-                    completion(doc.data.username)
-                } else {
-                    completion("Unknown User")
-                }
+                let user = try document.data(as: User.self)
+                completion(user.username)
             } catch {
+                print("Error decoding user: \(error.localizedDescription)")
                 completion("Unknown User")
             }
         }

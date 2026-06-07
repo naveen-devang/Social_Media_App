@@ -35,7 +35,7 @@ class UserViewModel: ObservableObject {
     
     func fetchCurrentUser(uid: String) {
         isLoading = true
-        Task { try? await currentUserSubscription?.close() }
+        currentUserSubscription?.unsubscribe()
         
         Task {
             do {
@@ -54,7 +54,7 @@ class UserViewModel: ObservableObject {
                 
                 // Realtime subscription for current user document updates
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.\(AppwriteManager.shared.usersCollectionId).documents.\(uid)"
-                currentUserSubscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                currentUserSubscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     guard let payload = response.payload else { return }
                     
@@ -78,7 +78,7 @@ class UserViewModel: ObservableObject {
     
     func fetchUsers() {
         isLoading = true
-        Task { try? await usersSubscription?.close() }
+        usersSubscription?.unsubscribe()
         
         Task {
             do {
@@ -100,10 +100,10 @@ class UserViewModel: ObservableObject {
                 
                 // Realtime subscription for collection updates
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.\(AppwriteManager.shared.usersCollectionId).documents"
-                usersSubscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                usersSubscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
+                    if response.events.contains(where: { $0.contains(".delete") }) {
                         guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
                         Task { @MainActor in
                             self.users.removeAll { $0.id == deletedId }
@@ -252,7 +252,7 @@ class UserViewModel: ObservableObject {
     
     // Clean up when done
     deinit {
-        usersSubscription = nil
-        currentUserSubscription = nil
+        usersSubscription?.unsubscribe()
+        currentUserSubscription?.unsubscribe()
     }
 }

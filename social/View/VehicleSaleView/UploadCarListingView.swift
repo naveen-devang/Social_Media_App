@@ -476,7 +476,7 @@ struct UploadCarListingView: View {
                     sellerProfileURL: profileURL
                 )
                 
-                try await viewModel.createDocumentAtAppwrite(carListing)
+                try await viewModel.createDocumentAtFirebase(carListing)
                 isLoading = false
                 dismiss()
             } catch {

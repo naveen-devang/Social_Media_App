@@ -174,16 +174,23 @@ struct MessageBubble: View {
             } else {
                 // Profile image for other user
                 if let senderUser = userViewModel.users.first(where: { $0.userUID == message.senderId }) {
-                    AsyncImage(url: senderUser.userProfileURL) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
+                    if let profileURL = senderUser.userProfileURL {
+                        AsyncImage(url: profileURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Image(systemName: "person.crop.circle")
+                                .resizable()
+                        }
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                    } else {
                         Image(systemName: "person.crop.circle")
                             .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.gray)
                     }
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
                 }
                 
                 // Message content

@@ -11,7 +11,7 @@ class NotificationsViewModel: ObservableObject {
     private var subscription: RealtimeSubscription?
     
     func startListening(for userUID: String) {
-        Task { try? await subscription?.close() }
+        subscription?.unsubscribe()
         
         Task {
             do {
@@ -36,10 +36,10 @@ class NotificationsViewModel: ObservableObject {
                 
                 // Realtime subscription for notification collection updates
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.notifications.documents"
-                subscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                subscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
+                    if response.events.contains(where: { $0.contains(".delete") }) {
                         guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
                         Task { @MainActor in
                             self.notifications.removeAll { $0.id == deletedId }
@@ -86,7 +86,7 @@ class NotificationsViewModel: ObservableObject {
     }
     
     deinit {
-        subscription = nil
+        subscription?.unsubscribe()
     }
 }
 

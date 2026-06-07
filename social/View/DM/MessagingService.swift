@@ -18,7 +18,7 @@ class MessagingService: ObservableObject {
     // Get all conversations for current user
     func fetchConversations(for userId: String) {
         // Unsubscribe from any existing listener
-        Task { try? await conversationsSubscription?.close() }
+        conversationsSubscription?.unsubscribe()
         
         Task {
             do {
@@ -27,7 +27,7 @@ class MessagingService: ObservableObject {
                     databaseId: AppwriteManager.shared.databaseId,
                     collectionId: "conversations",
                     queries: [
-                        Query.contains("participants", value: [userId]),
+                        Query.contains("participants", userId),
                         Query.orderDesc("lastMessageTimestamp"),
                         Query.limit(100)
                     ],
@@ -44,10 +44,10 @@ class MessagingService: ObservableObject {
                 
                 // Realtime subscription
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.conversations.documents"
-                conversationsSubscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                conversationsSubscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
+                    if response.events.contains(where: { $0.contains(".delete") }) {
                         // If conversation deleted
                         guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
                         Task { @MainActor in
@@ -83,7 +83,7 @@ class MessagingService: ObservableObject {
     // Get messages for a specific conversation
     func fetchMessages(for conversationId: String) {
         // Unsubscribe from any existing listener
-        Task { try? await messagesSubscription?.close() }
+        messagesSubscription?.unsubscribe()
         
         print("Fetching messages for conversation: \(conversationId)")
         
@@ -111,10 +111,10 @@ class MessagingService: ObservableObject {
                 
                 // Realtime subscription for messages in this conversation
                 let channel = "databases.\(AppwriteManager.shared.databaseId).collections.messages.documents"
-                messagesSubscription = try await AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
+                messagesSubscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { [weak self] response in
                     guard let self = self else { return }
                     
-                    if (response.events ?? []).contains(where: { $0.contains(".delete") }) {
+                    if response.events.contains(where: { $0.contains(".delete") }) {
                         guard let payload = response.payload, let deletedId = payload["$id"] as? String else { return }
                         Task { @MainActor in
                             self.currentMessages.removeAll { $0.id == deletedId }
@@ -157,7 +157,7 @@ class MessagingService: ObservableObject {
                     databaseId: AppwriteManager.shared.databaseId,
                     collectionId: "conversations",
                     queries: [
-                        Query.contains("participants", value: [currentUserId]),
+                        Query.contains("participants", currentUserId),
                         Query.limit(100)
                     ],
                     nestedType: Conversation.self
@@ -335,7 +335,7 @@ class MessagingService: ObservableObject {
     }
     
     deinit {
-        conversationsSubscription = nil
-        messagesSubscription = nil
+        conversationsSubscription?.unsubscribe()
+        messagesSubscription?.unsubscribe()
     }
 }

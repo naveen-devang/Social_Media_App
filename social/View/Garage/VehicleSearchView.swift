@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+
 import SDWebImageSwiftUI
-import Appwrite
 
 struct VehicleSearchView: View {
     @Binding var searchText: String
@@ -90,85 +90,53 @@ class VehicleSearchViewModel: ObservableObject {
     @Published var searchResults: [Vehicle] = []
 
     func searchVehicles(searchText: String) {
-        guard !searchText.isEmpty else {
-            self.searchResults = []
-            return
-        }
-        
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    queries: [
-                        Query.equal("vinNumber", value: searchText)
-                    ],
-                    nestedType: Vehicle.self
-                )
-                
-                await MainActor.run {
-                    self.searchResults = result.documents.map { doc -> Vehicle in
-                        var vehicle = doc.data
-                        vehicle.id = doc.id
-                        return vehicle
-                    }
+        let db = Firestore.firestore()
+        let vehiclesRef = db.collection("Vehicles")
+
+        vehiclesRef.whereField("vinNumber", isEqualTo: searchText)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else {
+                    self.searchResults = snapshot?.documents.compactMap { document -> Vehicle? in
+                        try? document.data(as: Vehicle.self)
+                    } ?? []
                     
                     if self.searchResults.isEmpty {
                         self.searchByUsername(searchText: searchText)
                     }
                 }
-            } catch {
-                print("Error searching vehicles: \(error.localizedDescription)")
             }
-        }
     }
 
     private func searchByUsername(searchText: String) {
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.usersCollectionId,
-                    queries: [
-                        Query.equal("username", value: searchText),
-                        Query.limit(1)
-                    ],
-                    nestedType: User.self
-                )
-                
-                if let userDocument = result.documents.first {
-                    let userUID = userDocument.data.userUID
+        let db = Firestore.firestore()
+        let usersRef = db.collection("Users")
+
+        usersRef.whereField("username", isEqualTo: searchText)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else if let userDocument = snapshot?.documents.first {
+                    let userUID = userDocument.documentID
                     self.fetchVehiclesByUser(userUID: userUID)
                 }
-            } catch {
-                print("Error searching users: \(error.localizedDescription)")
             }
-        }
     }
 
     private func fetchVehiclesByUser(userUID: String) {
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    queries: [
-                        Query.equal("ownerUID", value: userUID)
-                    ],
-                    nestedType: Vehicle.self
-                )
-                
-                await MainActor.run {
-                    self.searchResults = result.documents.map { doc -> Vehicle in
-                        var vehicle = doc.data
-                        vehicle.id = doc.id
-                        return vehicle
-                    }
+        let db = Firestore.firestore()
+        let vehiclesRef = db.collection("Vehicles")
+
+        vehiclesRef.whereField("ownerUID", isEqualTo: userUID)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else {
+                    self.searchResults = snapshot?.documents.compactMap { document -> Vehicle? in
+                        try? document.data(as: Vehicle.self)
+                    } ?? []
                 }
-            } catch {
-                print("Error fetching vehicles: \(error.localizedDescription)")
             }
-        }
     }
 }
-

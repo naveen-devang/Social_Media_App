@@ -41,16 +41,23 @@ struct NewMessageView: View {
                     // Compose message view
                     VStack {
                         HStack {
-                            AsyncImage(url: selectedUser.userProfileURL) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            } placeholder: {
+                            if let profileURL = selectedUser.userProfileURL {
+                                AsyncImage(url: profileURL) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    Image(systemName: "person.crop.circle")
+                                        .resizable()
+                                }
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                            } else {
                                 Image(systemName: "person.crop.circle")
                                     .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.gray)
                             }
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
                             
                             Text("Message to \(selectedUser.username)")
                                 .font(.headline)
@@ -97,7 +104,8 @@ struct NewMessageView: View {
                             selectedUser = user
                         }) {
                             HStack {
-                                AsyncImage(url: user.userProfileURL) { image in
+                                if let profileURL = user.userProfileURL {
+                                    AsyncImage(url: profileURL) { image in
                                         image
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
@@ -107,6 +115,12 @@ struct NewMessageView: View {
                                     }
                                     .frame(width: 40, height: 40)
                                     .clipShape(Circle())
+                                } else {
+                                    Image(systemName: "person.crop.circle")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .foregroundColor(.gray)
+                                }
                                 
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(user.username)

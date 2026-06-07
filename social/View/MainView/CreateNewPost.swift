@@ -2,17 +2,10 @@
 //  CreateNewPost.swift
 //  social
 //
-//  Created by デバン・ナビーン on 22/06/23.
-//
 
 import SwiftUI
 import PhotosUI
-import Firebase
-import FirebaseStorage
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import FirebaseFirestoreTarget
-import FirebaseFirestoreSwiftTarget
+import Appwrite
 
 struct CreateNewPost: View {
     /// - Callbacks
@@ -73,23 +66,23 @@ struct CreateNewPost: View {
                         GeometryReader{
                             let size = $0.size
                             Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: size.width, height: size.height)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                /// - Delete Button
-                                .overlay(alignment: .topTrailing) {
-                                    Button {
-                                        withAnimation(.easeInOut(duration: 0.25)) {
-                                            self.postImageData = nil
-                                        }
-                                    } label: {
-                                        Image(systemName: "trash")
-                                            .fontWeight(.bold)
-                                            .tint(.red)
-                                    }
-                                    .padding(10)
-                                }
+                               .resizable()
+                               .aspectRatio(contentMode: .fill)
+                               .frame(width: size.width, height: size.height)
+                               .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                               /// - Delete Button
+                               .overlay(alignment: .topTrailing) {
+                                   Button {
+                                       withAnimation(.easeInOut(duration: 0.25)) {
+                                           self.postImageData = nil
+                                       }
+                                   } label: {
+                                       Image(systemName: "trash")
+                                           .fontWeight(.bold)
+                                           .tint(.red)
+                                   }
+                                   .padding(10)
+                               }
                         }
                         .clipped()
                         .frame(height: 220)
@@ -140,7 +133,7 @@ struct CreateNewPost: View {
         }
     }
     
-    //MARK: Post Content to Firebase
+    //MARK: Post Content to Appwrite
     func createPost(){
         isLoading = true
         showKeyboard = false
@@ -148,20 +141,30 @@ struct CreateNewPost: View {
             do{
                 guard let profileURL = profileURL else{return}
                 /// Step 1: Uploading Image if Any
-                /// User to Delete the Post
-                let imageReferenceID = "\(userUID)\(Date())"
-                let storageRef = Storage.storage().reference().child("Post_Images").child(imageReferenceID)
+                let imageReferenceID = UUID().uuidString.lowercased()
+                
                 if let postImageData{
-                    let _ = try await storageRef.putDataAsync(postImageData)
-                    let downloadURL = try await storageRef.downloadURL()
+                    let fileId = "post_\(imageReferenceID)"
+                    let inputFile = InputFile.fromData(postImageData, filename: "post.jpg", mimeType: "image/jpeg")
+                    let uploadedFile = try await AppwriteManager.shared.storage.createFile(
+                        bucketId: AppwriteManager.shared.bucketId,
+                        fileId: fileId,
+                        file: inputFile
+                    )
+                    
+                    let downloadURLString = AppwriteManager.shared.storage.getFileView(
+                        bucketId: AppwriteManager.shared.bucketId,
+                        fileId: uploadedFile.id
+                    ).absoluteString
+                    guard let downloadURL = URL(string: downloadURLString) else { return }
                     
                     /// Step 3: Create Post Object with Image ID and URL
                     let post = Post(text: postText, imageURL: downloadURL, imageReferenceID: imageReferenceID, userName: userName, userUID: userUID, userProfileURL: profileURL)
-                    try await createDocumentAtFirebase(post)
+                    try await createDocumentAtAppwrite(post)
                 } else {
-                    /// Step 2: Directly Post Text Data to Firebase (Since there is no images Present)
+                    /// Step 2: Directly Post Text Data (Since there is no images Present)
                     let post = Post(text: postText, userName: userName, userUID: userUID, userProfileURL: profileURL)
-                    try await createDocumentAtFirebase(post)
+                    try await createDocumentAtAppwrite(post)
                 }
             } catch {
                 await setError(error)
@@ -169,24 +172,28 @@ struct CreateNewPost: View {
         }
     }
      
-    func createDocumentAtFirebase(_ post: Post)async throws{
-        /// - Writing Document to Firebase Firestore
-        let doc = Firestore.firestore().collection("Posts").document()
-        let _ = try doc.setData(from: post, completion: { error in
-            if error == nil{
-                /// Post Successfully Stored at Firebase
-                isLoading = false
-                var updatedPost = post
-                updatedPost.id = doc.documentID
-                onPost(updatedPost)
-                dismiss()
-            }
-        })
+    func createDocumentAtAppwrite(_ post: Post)async throws{
+        let docId = ID.unique()
+        let _ = try await AppwriteManager.shared.databases.createDocument(
+            databaseId: AppwriteManager.shared.databaseId,
+            collectionId: AppwriteManager.shared.postsCollectionId,
+            documentId: docId,
+            data: post.toDictionary
+        )
+        
+        await MainActor.run {
+            isLoading = false
+            var updatedPost = post
+            updatedPost.id = docId
+            onPost(updatedPost)
+            dismiss()
+        }
     }
     
     //MARK: Displaying Errors as Alert
     func setError(_ error: Error)async{
         await MainActor.run(body: {
+            isLoading = false
             errorMessage = error.localizedDescription
             showError.toggle()
         })

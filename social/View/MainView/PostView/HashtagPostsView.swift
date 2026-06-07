@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Appwrite
+
 
 struct HashtagPostsView: View {
     let hashtag: String
@@ -41,30 +41,30 @@ struct HashtagPostsView: View {
     
 
     func fetchPosts() {
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.postsCollectionId,
-                    queries: [
-                        Query.contains("hashtags", value: [hashtag]),
-                        Query.orderDesc("publishedDate")
-                    ],
-                    nestedType: Post.self
-                )
-                
-                let fetchedPosts = result.documents.map { doc -> Post in
-                    var p = doc.data
-                    p.id = doc.id
-                    return p
+        let db = Firestore.firestore()
+        db.collection("Posts")
+            .whereField("hashtags", arrayContains: hashtag) // Fetch posts with the specified hashtag
+            .order(by: "publishedDate", descending: true) // Sort posts by published date in descending order
+            .getDocuments { querySnapshot, error in
+                if let error = error {
+                    print("Error fetching posts: \(error.localizedDescription)")
+                    return
                 }
-                
-                await MainActor.run {
-                    self.posts = fetchedPosts
+
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents found")
+                    return
                 }
-            } catch {
-                print("Error fetching posts for hashtag \(hashtag): \(error.localizedDescription)")
+
+                self.posts = documents.compactMap { document in
+                    do {
+                        let postData = try document.data(as: Post.self)
+                        return postData
+                    } catch {
+                        print("Error decoding post: \(error)")
+                        return nil
+                    }
+                }
             }
         }
     }
-}

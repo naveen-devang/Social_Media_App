@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+
 import SDWebImageSwiftUI
-import Appwrite
 
 // BookmarkFolderRow.swift
 struct BookmarkFolderRow: View {
@@ -55,19 +55,20 @@ struct BookmarkFolderRow: View {
         var count = 0
         for postID in folder.bookmarkedPosts {
             do {
-                _ = try await AppwriteManager.shared.databases.getDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.postsCollectionId,
-                    documentId: postID,
-                    nestedType: Post.self
-                )
-                count += 1
+                let docSnapshot = try await Firestore.firestore()
+                    .collection("Posts")
+                    .document(postID)
+                    .getDocument()
+                
+                if docSnapshot.exists {
+                    count += 1
+                }
             } catch {
                 print("Error checking post existence: \(error)")
             }
         }
         
-        await MainActor.run {
+        DispatchQueue.main.async {
             self.validPostCount = count
         }
     }
@@ -77,15 +78,15 @@ struct BookmarkFolderRow: View {
         
         do {
             let firstPostID = folder.bookmarkedPosts[0]
-            let doc = try await AppwriteManager.shared.databases.getDocument(
-                databaseId: AppwriteManager.shared.databaseId,
-                collectionId: AppwriteManager.shared.postsCollectionId,
-                documentId: firstPostID,
-                nestedType: Post.self
-            )
+            let docSnapshot = try await Firestore.firestore()
+                .collection("Posts")
+                .document(firstPostID)
+                .getDocument()
             
-            if let firstImageURL = doc.data.imageURL {
-                await MainActor.run {
+            if docSnapshot.exists,
+               let post = try? docSnapshot.data(as: Post.self),
+               let firstImageURL = post.imageURLs.first {
+                DispatchQueue.main.async {
                     self.firstPostImage = firstImageURL
                 }
             }
@@ -163,11 +164,13 @@ struct BookmarksView: View {
     
     func deleteFolder(_ folder: BookmarkFolder) async {
         do {
-            _ = try await AppwriteManager.shared.databases.deleteDocument(
-                databaseId: AppwriteManager.shared.databaseId,
-                collectionId: "bookmark_folders",
-                documentId: folder.id
-            )
+            try await Firestore.firestore()
+                .collection("Users")
+                .document(userUID)
+                .collection("BookmarkFolders")
+                .document(folder.id)
+                .delete()
+            
             await bookmarkManager.fetchFolders(userUID: userUID)
         } catch {
             print("Error deleting folder: \(error)")
@@ -232,33 +235,27 @@ struct BookmarkedPostsView: View {
             var fetchedPosts: [Post] = []
             
             for postID in folder.bookmarkedPosts {
-                do {
-                    let doc = try await AppwriteManager.shared.databases.getDocument(
-                        databaseId: AppwriteManager.shared.databaseId,
-                        collectionId: AppwriteManager.shared.postsCollectionId,
-                        documentId: postID,
-                        nestedType: Post.self
-                    )
-                    var post = doc.data
-                    post.id = doc.id
+                let docSnapshot = try await Firestore.firestore()
+                    .collection("Posts")
+                    .document(postID)
+                    .getDocument()
+                
+                if docSnapshot.exists,
+                   let post = try? docSnapshot.data(as: Post.self) {
                     fetchedPosts.append(post)
-                } catch {
-                    print("Error fetching post \(postID): \(error)")
                 }
             }
             
             // Sort posts by date, newest first
             fetchedPosts.sort { $0.publishedDate > $1.publishedDate }
             
-            await MainActor.run {
+            DispatchQueue.main.async {
                 self.posts = fetchedPosts
                 self.isLoading = false
             }
         } catch {
             print("Error fetching bookmarked posts: \(error)")
-            await MainActor.run {
-                self.isLoading = false
-            }
+            isLoading = false
         }
     }
 }

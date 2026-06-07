@@ -5,14 +5,13 @@
 //  Created by Naveen on 26/06/24.
 //
 import SwiftUI
-import Appwrite
 
 
 
 struct CarListingsView: View {
     @Binding var carListings: [CarListing]
     @State private var isFetching: Bool = true
-    @State private var lastDocumentID: String? = nil
+    @State private var lastDocument: DocumentSnapshot? = nil
     @State private var isFetchingMore: Bool = false
     @State private var showUploadView: Bool = false
     
@@ -619,55 +618,59 @@ struct CarListingsView: View {
         }
     }
     
+    // Inside your CarListingsView struct, replace the fetchCarListings() function with this:
+
     func fetchCarListings() async {
         isFetching = true
         currentPage = 0
-        lastDocumentID = nil
+        lastDocument = nil
         
         do {
-            var queries: [String] = []
+            // Create the base query
+            let db = Firestore.firestore()
+            var fetchedListings: [CarListing] = []
+            
+            // First retrieve all listings without filters
+            let collectionRef = db.collection("CarListings")
             
             // Apply sorting
+            var query: Query
             switch sortOption {
             case .newest:
-                queries.append(Query.orderDesc("publishedDate"))
+                query = collectionRef.order(by: "publishedDate", descending: true)
             case .priceHighToLow:
-                queries.append(Query.orderDesc("price"))
+                query = collectionRef.order(by: "price", descending: true)
             case .priceLowToHigh:
-                queries.append(Query.orderAsc("price"))
+                query = collectionRef.order(by: "price", descending: false)
             case .yearNewest:
-                queries.append(Query.orderDesc("year"))
+                query = collectionRef.order(by: "year", descending: true)
             case .yearOldest:
-                queries.append(Query.orderAsc("year"))
+                query = collectionRef.order(by: "year", descending: false)
             }
             
-            // Apply price filters
+            // Apply limited Firestore filters - only use one compound query for performance
+            // We'll apply the rest of the filters in memory
+            
+            // Only add price filter in Firestore query since it's likely most restrictive
             if minPrice > 0 {
-                queries.append(Query.greaterThanEqual("price", value: minPrice))
+                query = query.whereField("price", isGreaterThanOrEqualTo: minPrice)
             }
             
             if maxPrice < 100000 {
-                queries.append(Query.lessThanEqual(attribute: "price", value: maxPrice))
+                query = query.whereField("price", isLessThanOrEqualTo: maxPrice)
             }
             
-            // Limit to a reasonable number for in-memory filtering/pagination
-            queries.append(Query.limit(50))
+            // Limit to a reasonable number for in-memory filtering
+            query = query.limit(to: 10)
             
-            let result = try await AppwriteManager.shared.databases.listDocuments(
-                databaseId: AppwriteManager.shared.databaseId,
-                collectionId: AppwriteManager.shared.carListingsCollectionId,
-                queries: queries,
-                nestedType: CarListing.self
-            )
-            
-            if let lastDoc = result.documents.last {
-                lastDocumentID = lastDoc.id
+            let docs = try await query.getDocuments()
+            if let lastDoc = docs.documents.last {
+                lastDocument = lastDoc
             }
             
-            let fetchedListings = result.documents.map { doc -> CarListing in
-                var listing = doc.data
-                listing.id = doc.id
-                return listing
+            // Get all listings first
+            fetchedListings = docs.documents.compactMap { doc -> CarListing? in
+                try? doc.data(as: CarListing.self)
             }
             
             let makes = Set(fetchedListings.map { $0.make }).sorted()
@@ -716,61 +719,56 @@ struct CarListingsView: View {
         }
     }
     
+    // You should also update the fetchMoreCarListingsIfNeeded function with similar logic
     func fetchMoreCarListingsIfNeeded() {
-        guard let lastID = lastDocumentID, !isFetchingMore else { return }
+        guard let lastDocument = lastDocument, !isFetchingMore else { return }
         isFetchingMore = true
         
         Task {
             do {
-                var queries: [String] = []
+                let db = Firestore.firestore()
+                
+                // Create base query with sorting
+                let collectionRef = db.collection("CarListings")
                 
                 // Apply sorting
+                var query: Query
                 switch sortOption {
                 case .newest:
-                    queries.append(Query.orderDesc("publishedDate"))
+                    query = collectionRef.order(by: "publishedDate", descending: true)
                 case .priceHighToLow:
-                    queries.append(Query.orderDesc("price"))
+                    query = collectionRef.order(by: "price", descending: true)
                 case .priceLowToHigh:
-                    queries.append(Query.orderAsc("price"))
+                    query = collectionRef.order(by: "price", descending: false)
                 case .yearNewest:
-                    queries.append(Query.orderDesc("year"))
+                    query = collectionRef.order(by: "year", descending: true)
                 case .yearOldest:
-                    queries.append(Query.orderAsc("year"))
+                    query = collectionRef.order(by: "year", descending: false)
                 }
                 
                 // Start after last document
-                queries.append(Query.cursorAfter(lastID))
+                query = query.start(afterDocument: lastDocument)
                 
-                // Apply price filters
+                // Apply limited Firestore filters
                 if minPrice > 0 {
-                    queries.append(Query.greaterThanEqual("price", value: minPrice))
+                    query = query.whereField("price", isGreaterThanOrEqualTo: minPrice)
                 }
                 
                 if maxPrice < 100000 {
-                    queries.append(Query.lessThanEqual(attribute: "price", value: maxPrice))
+                    query = query.whereField("price", isLessThanOrEqualTo: maxPrice)
                 }
                 
                 // Limit query results
-                queries.append(Query.limit(50))
+                query = query.limit(to: 50)
                 
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.carListingsCollectionId,
-                    queries: queries,
-                    nestedType: CarListing.self
-                )
-                
-                if let lastDoc = result.documents.last {
-                    self.lastDocumentID = lastDoc.id
-                } else {
-                    self.lastDocumentID = nil
+                let docs = try await query.getDocuments()
+                if let lastDoc = docs.documents.last {
+                    self.lastDocument = lastDoc
                 }
                 
                 // Get all new listings
-                var fetchedListings = result.documents.map { doc -> CarListing in
-                    var listing = doc.data
-                    listing.id = doc.id
-                    return listing
+                var fetchedListings = docs.documents.compactMap { doc -> CarListing? in
+                    try? doc.data(as: CarListing.self)
                 }
                 
                 // Apply filters in memory

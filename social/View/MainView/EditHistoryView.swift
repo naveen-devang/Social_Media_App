@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import Appwrite
+
 
 struct EditHistoryView: View {
     let vehicleID: String
     @State private var editHistory: [VehicleEdit] = []
     @State private var isLoading = true
-    @State private var offset = 0
+    @State private var lastDocument: DocumentSnapshot?
     @State private var hasMoreData = true
     @State private var selectedEdit: VehicleEdit?
     @State private var showDetailView = false
@@ -39,7 +39,7 @@ struct EditHistoryView: View {
                         Button(action: {
                             // Reset and reload
                             editHistory = []
-                            offset = 0
+                            lastDocument = nil
                             hasMoreData = true
                             fetchEditHistory()
                         }) {
@@ -145,39 +145,34 @@ struct EditHistoryView: View {
     private func fetchEditHistory() {
         isLoading = true
         
-        let currentOffset = offset
+        let db = Firestore.firestore()
+        var query = db.collection("Vehicles")
+            .document(vehicleID)
+            .collection("EditHistory")
+            .order(by: "timestamp", descending: true)
+            .limit(to: pageSize)
         
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "edit_history",
-                    queries: [
-                        Query.equal("vehicleID", value: vehicleID),
-                        Query.orderDesc("timestamp"),
-                        Query.limit(pageSize),
-                        Query.offset(currentOffset)
-                    ],
-                    nestedType: VehicleEdit.self
-                )
-                
-                await MainActor.run {
-                    isLoading = false
-                    let newEdits = result.documents.map { doc -> VehicleEdit in
-                        var edit = doc.data
-                        edit.id = doc.id
-                        return edit
-                    }
-                    editHistory.append(contentsOf: newEdits)
-                    offset = editHistory.count
-                    hasMoreData = !newEdits.isEmpty && newEdits.count == pageSize
-                }
-            } catch {
-                await MainActor.run {
-                    isLoading = false
-                    print("Error fetching edit history: \(error.localizedDescription)")
-                }
+        if let lastDoc = lastDocument {
+            query = query.start(afterDocument: lastDoc)
+        }
+        
+        query.getDocuments { snapshot, error in
+            isLoading = false
+            
+            if let error = error {
+                print("Error fetching edit history: \(error.localizedDescription)")
+                return
             }
+            
+            guard let snapshot = snapshot else { return }
+            
+            let newEdits = snapshot.documents.compactMap { document in
+                try? document.data(as: VehicleEdit.self)
+            }
+            
+            editHistory.append(contentsOf: newEdits)
+            lastDocument = snapshot.documents.last
+            hasMoreData = !snapshot.documents.isEmpty && snapshot.documents.count == pageSize
         }
     }
     
@@ -284,11 +279,11 @@ struct EditHistoryCard: View {
         .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
     
-    private func formatTimestamp(_ timestamp: Date) -> String {
+    private func formatTimestamp(_ timestamp: Timestamp) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-        return formatter.string(from: timestamp)
+        return formatter.string(from: timestamp.dateValue())
     }
 }
 
@@ -386,6 +381,8 @@ struct EditDetailView: View {
                 }
             }
             .onAppear {
+                // Simulate loading to ensure sheet is properly initialized
+                // This helps prevent cases where sheet content might not display
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     loadingComplete = true
                     isLoading = false
@@ -394,10 +391,10 @@ struct EditDetailView: View {
         }
     }
     
-    private func formatTimestamp(_ timestamp: Date) -> String {
+    private func formatTimestamp(_ timestamp: Timestamp) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-        return formatter.string(from: timestamp)
+        return formatter.string(from: timestamp.dateValue())
     }
 }

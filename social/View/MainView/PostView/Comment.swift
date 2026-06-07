@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Appwrite
+
 import SDWebImageSwiftUI
 
 // Comment struct
@@ -154,34 +154,39 @@ struct CommentsView: View {
     }
     
     func likeComment(_ comment: Comment) {
-        Task {
-            do {
-                let currentUserLiked = comment.likes.contains(userID)
-                var updatedLikes = comment.likes
-                if currentUserLiked {
-                    updatedLikes.removeAll { $0 == userID }
+        let db = Firestore.firestore()
+        let commentsCollection = db.collection("Posts").document(postID).collection("Comments")
+        
+        commentsCollection.whereField("id", isEqualTo: comment.id.uuidString).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error finding comment: \(error)")
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("No matching comment found")
+                return
+            }
+            
+            // Toggle like
+            let currentUserLiked = comment.likes.contains(userID)
+            var updatedLikes = comment.likes
+            
+            if currentUserLiked {
+                updatedLikes.removeAll { $0 == userID }
+            } else {
+                updatedLikes.append(userID)
+            }
+            
+            document.reference.updateData([
+                "likes": updatedLikes
+            ]) { error in
+                if let error = error {
+                    print("Error updating likes: \(error)")
                 } else {
-                    updatedLikes.append(userID)
+                    // Trigger a refresh of comments
+                    onCommentUpdated()
                 }
-                // Find comment document by querying postID sub-collection field
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    queries: [
-                        Query.equal("postID", value: postID),
-                        Query.equal("commentUUID", value: comment.id.uuidString)
-                    ]
-                )
-                guard let doc = result.documents.first else { return }
-                _ = try await AppwriteManager.shared.databases.updateDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    documentId: doc.id,
-                    data: ["likes": updatedLikes]
-                )
-                onCommentUpdated()
-            } catch {
-                print("Error liking comment: \(error)")
             }
         }
     }
@@ -191,25 +196,26 @@ struct CommentsView: View {
     }
     
     func deleteComment(_ comment: Comment) {
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    queries: [
-                        Query.equal("postID", value: postID),
-                        Query.equal("commentUUID", value: comment.id.uuidString)
-                    ]
-                )
-                guard let doc = result.documents.first else { return }
-                _ = try await AppwriteManager.shared.databases.deleteDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    documentId: doc.id
-                )
-                onCommentDeleted()
-            } catch {
-                print("Error deleting comment: \(error)")
+        let db = Firestore.firestore()
+        let commentsCollection = db.collection("Posts").document(postID).collection("Comments")
+        
+        commentsCollection.whereField("id", isEqualTo: comment.id.uuidString).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error finding comment: \(error)")
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("No matching comment found")
+                return
+            }
+            
+            document.reference.delete { error in
+                if let error = error {
+                    print("Error deleting comment: \(error)")
+                } else {
+                    onCommentDeleted()
+                }
             }
         }
     }
@@ -506,21 +512,22 @@ struct AddCommentView: View {
     }
     
     func fetchUserData() {
-        Task {
-            do {
-                let doc = try await AppwriteManager.shared.databases.getDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.usersCollectionId,
-                    documentId: userID,
-                    nestedType: User.self
-                )
-                let user = doc.data
-                await MainActor.run {
-                    self.userName = user.username
-                    self.userProfileURL = user.userProfileURL
-                }
-            } catch {
+        let db = Firestore.firestore()
+        let userRef = db.collection("Users").document(userID)
+        
+        userRef.getDocument { snapshot, error in
+            if let error = error {
                 print("Error fetching user data: \(error)")
+                return
+            }
+            
+            if let data = snapshot?.data() {
+                self.userName = data["username"] as? String ?? "Unknown"
+                if let profileURLString = data["userProfileURL"] as? String,
+                   !profileURLString.isEmpty,
+                   let url = URL(string: profileURLString) {
+                    self.userProfileURL = url
+                }
             }
         }
     }
@@ -555,95 +562,96 @@ struct AddCommentView: View {
     }
     
     func saveCommentToFirestore(comment: Comment) {
-        Task {
-            do {
-                let commentData: [String: Any] = [
-                    "commentUUID": comment.id.uuidString,
-                    "postID": postID,
-                    "userID": comment.userID,
-                    "userName": comment.userName,
-                    "userProfileURL": comment.userProfileURL?.absoluteString ?? "",
-                    "text": comment.text,
-                    "timestamp": ISO8601DateFormatter().string(from: comment.timestamp),
-                    "parentCommentID": comment.parentCommentID?.uuidString ?? "",
-                    "likes": comment.likes
-                ]
-                _ = try await AppwriteManager.shared.databases.createDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    documentId: ID.unique(),
-                    data: commentData
-                )
-                await MainActor.run {
-                    onCommentAdded()
-                    commentText = ""
-                    replyingToComment = nil
-                    editingComment = nil
-                }
-            } catch {
+        let db = Firestore.firestore()
+        let commentsCollection = db.collection("Posts").document(postID).collection("Comments")
+        
+        let commentData: [String: Any] = [
+            "id": comment.id.uuidString,
+            "userID": comment.userID,
+            "userName": comment.userName,
+            "userProfileURL": comment.userProfileURL?.absoluteString ?? "",
+            "text": comment.text,
+            "timestamp": comment.timestamp,
+            "parentCommentID": comment.parentCommentID?.uuidString ?? NSNull()
+        ]
+        
+        commentsCollection.addDocument(data: commentData) { error in
+            if let error = error {
                 print("Error adding comment: \(error)")
+            } else {
+                onCommentAdded()
+                commentText = ""
+                replyingToComment = nil
+                editingComment = nil
             }
         }
     }
     
     func likeComment(_ comment: Comment) {
-        Task {
-            do {
-                let currentUserLiked = comment.likes.contains(userID)
-                var updatedLikes = comment.likes
-                if currentUserLiked {
-                    updatedLikes.removeAll { $0 == userID }
+        let db = Firestore.firestore()
+        let commentsCollection = db.collection("Posts").document(postID).collection("Comments")
+        
+        commentsCollection.whereField("id", isEqualTo: comment.id.uuidString).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error finding comment: \(error)")
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("No matching comment found")
+                return
+            }
+            
+            // Toggle like
+            let currentUserLiked = comment.likes.contains(userID)
+            var updatedLikes = comment.likes
+            
+            if currentUserLiked {
+                updatedLikes.removeAll { $0 == userID }
+            } else {
+                updatedLikes.append(userID)
+            }
+            
+            document.reference.updateData([
+                "likes": updatedLikes
+            ]) { error in
+                if let error = error {
+                    print("Error updating likes: \(error)")
                 } else {
-                    updatedLikes.append(userID)
+                    // Trigger a refresh of comments
+                    onCommentUpdated()
                 }
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    queries: [
-                        Query.equal("postID", value: postID),
-                        Query.equal("commentUUID", value: comment.id.uuidString)
-                    ]
-                )
-                guard let doc = result.documents.first else { return }
-                _ = try await AppwriteManager.shared.databases.updateDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    documentId: doc.id,
-                    data: ["likes": updatedLikes]
-                )
-                onCommentUpdated()
-            } catch {
-                print("Error liking comment: \(error)")
             }
         }
     }
     
     func updateComment() {
         guard let comment = editingComment else { return }
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    queries: [
-                        Query.equal("postID", value: postID),
-                        Query.equal("commentUUID", value: comment.id.uuidString)
-                    ]
-                )
-                guard let doc = result.documents.first else { return }
-                _ = try await AppwriteManager.shared.databases.updateDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "comments",
-                    documentId: doc.id,
-                    data: ["text": commentText]
-                )
-                await MainActor.run {
+        
+        let db = Firestore.firestore()
+        let commentsCollection = db.collection("Posts").document(postID).collection("Comments")
+        
+        commentsCollection.whereField("id", isEqualTo: comment.id.uuidString).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error finding comment: \(error)")
+                return
+            }
+            
+            guard let document = querySnapshot?.documents.first else {
+                print("No matching comment found")
+                return
+            }
+            
+            document.reference.updateData([
+                "text": commentText
+            ]) { error in
+                if let error = error {
+                    print("Error updating comment: \(error)")
+                } else {
                     onCommentUpdated()
                     commentText = ""
                     editingComment = nil
                 }
-            } catch {
-                print("Error updating comment: \(error)")
             }
         }
     }

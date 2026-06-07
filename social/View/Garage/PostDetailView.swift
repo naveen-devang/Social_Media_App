@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
-import Appwrite
+
 
 struct PostDetailView: View {
     let post: Post
@@ -29,16 +29,35 @@ struct PostDetailView: View {
                 Text(post.text)
                     .font(.body)
                 
-                if let imageURL = post.imageURL {
-                    WebImage(url: imageURL)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 300)
+                if !post.imageURLs.isEmpty {
+                    TabView {
+                        ForEach(post.imageURLs, id: \.self) { imageURL in
+                            WebImage(url: imageURL)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                    }
+                    .frame(height: 300)
+                    .tabViewStyle(PageTabViewStyle())
+                }
+                
+                if !post.hashtags.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(post.hashtags, id: \.self) { hashtag in
+                                Text(hashtag)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(15)
+                            }
+                        }
+                    }
                 }
                 
                 HStack {
                     Image(systemName: "heart")
-                    Text("\(post.likedIDs.count)")
+                    Text("\(post.likes)")
                     
                     Spacer()
                     
@@ -46,6 +65,8 @@ struct PostDetailView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
+                
+
             }
             .padding()
         }
@@ -72,19 +93,12 @@ struct TaggedVehicleView: View {
     }
     
     private func fetchVehicle() {
-        Task {
-            do {
-                let doc = try await AppwriteManager.shared.databases.getDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    documentId: vehicleID,
-                    nestedType: Vehicle.self
-                )
-                await MainActor.run {
-                    self.vehicle = doc.data
-                }
-            } catch {
-                print("Error fetching vehicle: \(error.localizedDescription)")
+        let db = Firestore.firestore()
+        db.collection("Vehicles").document(vehicleID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                self.vehicle = try? document.data(as: Vehicle.self)
+            } else {
+                print("Vehicle document does not exist")
             }
         }
     }

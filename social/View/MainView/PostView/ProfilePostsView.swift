@@ -1,14 +1,21 @@
+//
+//  ProfilePostsView.swift
+//  social
+//
+//  Created by デバン・ナビーン on 13/03/24.
+//
+
 import SwiftUI
+
 
 struct ProfilePostsView: View {
     @State private var userPosts: [Post] = []
     @State private var createNewPost = false
-    @AppStorage("user_UID") private var userUID: String = ""
     
     var body: some View {
         VStack {
             // Display user's posts
-            ReusablePostsView(basedOnUID: true, uid: userUID, posts: $userPosts)
+            ReusablePostsView(posts: $userPosts, basedOnUID: true, uid: Auth.auth().currentUser?.uid ?? "", isProfileView: true)
             .task {
                     await fetchUserPosts()
                 }

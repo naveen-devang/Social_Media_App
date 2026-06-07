@@ -127,16 +127,23 @@ struct ConversationRow: View {
             
             HStack {
                 // Profile image
-                AsyncImage(url: otherUser.userProfileURL) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
+                if let profileURL = otherUser.userProfileURL {
+                    AsyncImage(url: profileURL) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                    }
+                    .frame(width: 50, height: 50)
+                    .clipShape(Circle())
+                } else {
                     Image(systemName: "person.crop.circle")
                         .resizable()
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.gray)
                 }
-                .frame(width: 50, height: 50)
-                .clipShape(Circle())
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {

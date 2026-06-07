@@ -2,14 +2,10 @@
 //  PostCardView.swift
 //  social
 //
-//  Created by デバン・ナビーン on 23/06/23.
-//
 
 import SwiftUI
 import SDWebImageSwiftUI
-import Firebase
-import FirebaseFirestore
-import FirebaseStorage
+import Appwrite
 
 struct PostCardView: View {
     var post: Post
@@ -18,7 +14,7 @@ struct PostCardView: View {
     var onDelete: ()-> ()
     /// - View Properties
     @AppStorage("user_UID") private var userUID: String = ""
-    @State private var docListener: ListenerRegistration?
+    @State private var subscription: RealtimeSubscription?
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             WebImage(url: post.userProfileURL)
@@ -73,32 +69,32 @@ struct PostCardView: View {
             }
         })
         .onAppear {
-            if docListener == nil {
+            if subscription == nil {
                 guard let postID = post.id else {return}
-                docListener = Firestore.firestore().collection("Posts").document(postID).addSnapshotListener({ snapshot,
-                    error in
-                    if let snapshot {
-                        if snapshot.exists {
-                            /// - Document Updated
-                            /// - Fetching Updated Document
-                            if let updatedPost = try? snapshot.data(as: Post.self) {
-                                onUpdate(updatedPost)
-                                
-                            }
-                        } else {
-                            /// - Document Deleted
-                            onDelete()
-                        }
+                let channel = "databases.\(AppwriteManager.shared.databaseId).collections.\(AppwriteManager.shared.postsCollectionId).documents.\(postID)"
+                
+                subscription = AppwriteManager.shared.realtime.subscribe(channels: [channel]) { response in
+                    // If deletion event is received, notify parent view
+                    if response.events.contains(where: { $0.contains(".delete") }) {
+                        onDelete()
+                        return
                     }
-                })
+                    
+                    // If document update payload is available, decode it and callback
+                    guard let payload = response.payload else { return }
+                    if let data = try? JSONSerialization.data(withJSONObject: payload, options: []),
+                       let updatedPost = try? JSONDecoder().decode(Post.self, from: data) {
+                        onUpdate(updatedPost)
+                    }
+                }
             }
         }
         .onDisappear{
             //MARK: Applying Snapshot Listener Only when the Post is Available on the Screen
-            // Else Removing the Listener (It saves unwanted live updates from the posts which was swiped away from the screen)
-            if let docListener{
-                docListener.remove()
-                self.docListener = nil
+            // Else Removing the Listener
+            if let subscription {
+                subscription.unsubscribe()
+                self.subscription = nil
             }
         }
     }
@@ -133,38 +129,63 @@ struct PostCardView: View {
     /// - Liking Posts
     func likePost(){
         Task{
-            guard let postID = post.id else {return}
+            guard let postID = post.id else { return }
+            var updatedLikedIDs = post.likedIDs
+            var updatedDislikedIDs = post.dislikedIDs
+            
             if post.likedIDs.contains(userUID){
                 /// Removing User ID from Array
-                try await Firestore.firestore().collection("Posts").document(postID).updateData([
-                    "likedIDs": FieldValue.arrayRemove([userUID])
-                ])
+                updatedLikedIDs.removeAll { $0 == userUID }
             } else {
-                /// - Adding User ID To Liked Array and Removing out ID from Disliked Array (if Added in Prior)
-                try await Firestore.firestore().collection("Posts").document(postID).updateData([
-                    "likedIDs": FieldValue.arrayUnion([userUID]),
-                    "dislikedIDs": FieldValue.arrayRemove([userUID])
-                ])
+                /// - Adding User ID To Liked Array and Removing out ID from Disliked Array
+                updatedLikedIDs.append(userUID)
+                updatedDislikedIDs.removeAll { $0 == userUID }
+            }
+            
+            do {
+                _ = try await AppwriteManager.shared.databases.updateDocument(
+                    databaseId: AppwriteManager.shared.databaseId,
+                    collectionId: AppwriteManager.shared.postsCollectionId,
+                    documentId: postID,
+                    data: [
+                        "likedIDs": updatedLikedIDs,
+                        "dislikedIDs": updatedDislikedIDs
+                    ]
+                )
+            } catch {
+                print("Error updating likes: \(error.localizedDescription)")
             }
         }
     }
     
     /// - Dislike Post
-    
     func dislikePost(){
         Task{
-            guard let postID = post.id else {return}
+            guard let postID = post.id else { return }
+            var updatedLikedIDs = post.likedIDs
+            var updatedDislikedIDs = post.dislikedIDs
+            
             if post.dislikedIDs.contains(userUID){
                 /// Removing User ID from Array
-                try await Firestore.firestore().collection("Posts").document(postID).updateData([
-                    "dislikedIDs": FieldValue.arrayRemove([userUID])
-                ])
+                updatedDislikedIDs.removeAll { $0 == userUID }
             } else {
-                /// - Adding User ID To Liked Array and Removing out ID from Disliked Array (if Added in Prior)
-                try await Firestore.firestore().collection("Posts").document(postID).updateData([
-                    "likedIDs": FieldValue.arrayRemove([userUID]),
-                    "dislikedIDs": FieldValue.arrayUnion([userUID])
-                ])
+                /// - Adding User ID To Disliked Array and Removing out ID from Liked Array
+                updatedDislikedIDs.append(userUID)
+                updatedLikedIDs.removeAll { $0 == userUID }
+            }
+            
+            do {
+                _ = try await AppwriteManager.shared.databases.updateDocument(
+                    databaseId: AppwriteManager.shared.databaseId,
+                    collectionId: AppwriteManager.shared.postsCollectionId,
+                    documentId: postID,
+                    data: [
+                        "likedIDs": updatedLikedIDs,
+                        "dislikedIDs": updatedDislikedIDs
+                    ]
+                )
+            } catch {
+                print("Error updating dislikes: \(error.localizedDescription)")
             }
         }
     }
@@ -172,16 +193,25 @@ struct PostCardView: View {
     /// - Deleting Post
     func deletePost(){
         Task{
-            /// Step 1: Delete Image from Firebase if Present
             do{
+                /// Step 1: Delete Image from Appwrite Storage if Present
                 if post.imageReferenceID != ""{
-                    try await Storage.storage().reference().child("Post_Images").child(post.imageReferenceID).delete()
+                    let fileId = "post_\(post.imageReferenceID)"
+                    try? await AppwriteManager.shared.storage.deleteFile(
+                        bucketId: AppwriteManager.shared.bucketId,
+                        fileId: fileId
+                    )
                 }
-                /// Step 2: Delete Firestore Document
+                
+                /// Step 2: Delete Database Document
                 guard let postID = post.id else{return}
-                try await Firestore.firestore().collection("Posts").document(postID).delete()
+                _ = try await AppwriteManager.shared.databases.deleteDocument(
+                    databaseId: AppwriteManager.shared.databaseId,
+                    collectionId: AppwriteManager.shared.postsCollectionId,
+                    documentId: postID
+                )
             } catch {
-                print(error.localizedDescription)
+                print("Error deleting post: \(error.localizedDescription)")
             }
         }
     }

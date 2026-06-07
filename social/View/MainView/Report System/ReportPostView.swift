@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Appwrite
+
 
 struct ReportPostView: View {
     @Environment(\.dismiss) private var dismiss
@@ -93,27 +93,22 @@ struct ReportPostView: View {
             status: "pending"
         )
         
-        Task {
-            do {
-                _ = try await AppwriteManager.shared.databases.createDocument(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "reports",
-                    documentId: ID.unique(),
-                    data: report.toDictionary
-                )
+        let db = Firestore.firestore()
+        do {
+            try db.collection("Reports").addDocument(from: report) { error in
+                isSubmitting = false
                 
-                await MainActor.run {
-                    isSubmitting = false
-                    alertMessage = "Report submitted successfully"
-                    showAlert = true
-                }
-            } catch {
-                await MainActor.run {
-                    isSubmitting = false
+                if let error = error {
                     alertMessage = "Error submitting report: \(error.localizedDescription)"
-                    showAlert = true
+                } else {
+                    alertMessage = "Report submitted successfully"
                 }
+                showAlert = true
             }
+        } catch {
+            isSubmitting = false
+            alertMessage = "Error creating report: \(error.localizedDescription)"
+            showAlert = true
         }
     }
 }

@@ -1,5 +1,15 @@
+//
+//  AddVehicleView.swift
+//  social
+//
+//  Created by デバン・ナビーン on 04/03/24.
+//
+
+// AddVehicleView.swift
+
 import SwiftUI
-import Appwrite
+
+
 
 struct AddVehicleView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -24,6 +34,7 @@ struct AddVehicleView: View {
             .alert(isPresented: $viewModel.showErrorAlert) {
                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
             }
+            // In AddVehicleView:
             .alert(isPresented: Binding(
                 get: { viewModel.currentAlert != .none },
                 set: { if !$0 { viewModel.currentAlert = .none } }
@@ -160,13 +171,13 @@ struct AddVehicleView: View {
     
     private var addVehicleButton: some View {
         Button("Add Vehicle") {
-            print("Add Vehicle button tapped")
+            print("Add Vehicle button tapped") // Add this debug print
             viewModel.addVehicle { success in
                 if success {
-                    print("Vehicle added successfully")
+                    print("Vehicle added successfully") // Add this debug print
                     presentationMode.wrappedValue.dismiss()
                 } else {
-                    print("Failed to add vehicle")
+                    print("Failed to add vehicle") // Add this debug print
                 }
             }
         }
@@ -206,13 +217,16 @@ class AddVehicleViewModel: ObservableObject {
     @Published var showExistingDataPrompt = false
     @Published var existingImageUrls: [String] = []
     @Published var removedImageUrls: [String] = []
+    
     @Published var canEditVehicle = true
+
     
     @AppStorage("user_UID") private var userUID: String = ""
     
     var isFormValid: Bool {
         !manufacturer.isEmpty && !model.isEmpty && isYearValid && !year.isEmpty && canEditVehicle
     }
+
     
     func validateYear(_ newValue: String) {
         isYearValid = newValue.count == 4 && Int(newValue) != nil
@@ -227,49 +241,43 @@ class AddVehicleViewModel: ObservableObject {
     
     @Published var currentAlert: AlertType = .none
     
-    private func getFileIdFromURL(_ urlString: String) -> String? {
-        guard let url = URL(string: urlString) else { return nil }
-        let pathComponents = url.pathComponents
-        if let filesIndex = pathComponents.firstIndex(of: "files"), filesIndex + 1 < pathComponents.count {
-            return pathComponents[filesIndex + 1]
-        }
-        return nil
-    }
-    
+    // First, let's add proper debug logging to track the flow
     func checkVin() {
         guard !vinNumber.isEmpty else { return }
 
         print("Checking VIN: \(vinNumber)")
 
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    queries: [
-                        Query.equal("vinNumber", value: vinNumber),
-                        Query.limit(1)
-                    ],
-                    nestedType: Vehicle.self
-                )
-                
-                await MainActor.run {
-                    if let existingDoc = result.documents.first {
+        let db = Firestore.firestore()
+        db.collection("Vehicles")
+            .whereField("vinNumber", isEqualTo: vinNumber)
+            .getDocuments { [weak self] (querySnapshot, err) in
+                guard let self = self else { return }
+
+                DispatchQueue.main.async {
+                    if let err = err {
+                        print("Error checking VIN: \(err.localizedDescription)")
+                        self.errorMessage = "Error checking VIN: \(err.localizedDescription)"
+                        self.currentAlert = .error
+                        self.showErrorAlert = true
+                        return
+                    }
+
+                    if let existingVehicle = querySnapshot?.documents.first {
                         print("Existing vehicle found")
-                        var vehicle = existingDoc.data
-                        vehicle.id = existingDoc.id
-                        self.existingVehicleData = vehicle
                         
-                        let ownerUID = vehicle.ownerUID
-                        if !ownerUID.isEmpty {
+                        let vehicleData = existingVehicle.data()
+                        if let ownerUID = vehicleData["ownerUID"] as? String, !ownerUID.isEmpty {
                             print("Owner UID found: \(ownerUID)")
                             
                             if ownerUID == self.userUID {
                                 print("Vehicle belongs to current user")
+                                let vehicle = try? existingVehicle.data(as: Vehicle.self)
+                                self.existingVehicleData = vehicle
                                 self.vinAlertMessage = "This is your vehicle. You can update its details."
                                 self.currentAlert = .vinCheck
                                 self.showVinAlert = true
                                 self.canEditVehicle = true
+                                
                             } else {
                                 print("Vehicle belongs to another user")
                                 self.getUsernameFromUID(ownerUID) { username in
@@ -285,6 +293,8 @@ class AddVehicleViewModel: ObservableObject {
                             }
                         } else {
                             print("Vehicle exists but has no owner")
+                            let vehicle = try? existingVehicle.data(as: Vehicle.self)
+                            self.existingVehicleData = vehicle
                             self.vinAlertMessage = "This VIN exists in the database. Would you like to use the existing data?"
                             self.currentAlert = .existingData
                             self.showExistingDataPrompt = true
@@ -298,44 +308,38 @@ class AddVehicleViewModel: ObservableObject {
                         self.showExistingDataPrompt = false
                     }
                 }
-            } catch {
-                await MainActor.run {
-                    print("Error checking VIN: \(error.localizedDescription)")
-                    self.errorMessage = "Error checking VIN: \(error.localizedDescription)"
-                    self.currentAlert = .error
-                    self.showErrorAlert = true
-                }
             }
-        }
     }
 
     func getUsernameFromUID(_ uid: String, completion: @escaping (String) -> Void) {
         print("Fetching username for UID: \(uid)")
         
-        Task {
-            do {
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: AppwriteManager.shared.usersCollectionId,
-                    queries: [
-                        Query.equal("userUID", value: uid),
-                        Query.limit(1)
-                    ],
-                    nestedType: User.self
-                )
+        let db = Firestore.firestore()
+        db.collection("Users")
+            .whereField("userUID", isEqualTo: uid)
+            .getDocuments { querySnapshot, error in
+                if let error = error {
+                    print("Error fetching username: \(error.localizedDescription)")
+                    completion("Unknown User")
+                    return
+                }
                 
-                if let userDoc = result.documents.first {
-                    print("Successfully retrieved username: \(userDoc.data.username)")
-                    completion(userDoc.data.username)
-                } else {
+                guard let document = querySnapshot?.documents.first else {
                     print("No user document found for UID: \(uid)")
                     completion("Unknown User")
+                    return
                 }
-            } catch {
-                print("Error fetching username: \(error.localizedDescription)")
-                completion("Unknown User")
+                
+                do {
+                    let user = try document.data(as: User.self)
+                    print("Successfully retrieved username: \(user.username)")
+                    completion(user.username)
+                } catch {
+                    print("Error decoding user document: \(error.localizedDescription)")
+                    print("Document data: \(document.data())")
+                    completion("Unknown User")
+                }
             }
-        }
     }
     
     func useExistingData() {
@@ -348,7 +352,7 @@ class AddVehicleViewModel: ObservableObject {
         mileage = String(vehicle.mileage)
         engine = vehicle.engine
         description = vehicle.description
-        existingImageUrls = vehicle.imageUrls ?? []
+        existingImageUrls = vehicle.imageUrls ?? [] // Safely unwrap optional array
         showExistingDataPrompt = false
     }
     
@@ -361,6 +365,8 @@ class AddVehicleViewModel: ObservableObject {
         selectedImages.removeAll { $0 == image }
     }
 
+    
+    
     func addVehicle(completion: @escaping (Bool) -> Void) {
         print("Adding vehicle...")
         guard let yearInt = Int(year), let mileageInt = Int(mileage) else {
@@ -371,49 +377,22 @@ class AddVehicleViewModel: ObservableObject {
             return
         }
         
-        Task {
-            do {
-                // 1. Upload new images to profile-images bucket
-                var uploadedUrls: [String] = []
-                for (index, image) in selectedImages.enumerated() {
-                    guard let imageData = image.jpegData(compressionQuality: 0.8) else { continue }
-                    let imageRefId = UUID().uuidString
-                    let fileId = "vehicle_\(imageRefId)"
-                    
-                    _ = try await AppwriteManager.shared.storage.createFile(
-                        bucketId: AppwriteManager.shared.bucketId,
-                        fileId: fileId,
-                        file: InputFile.fromData(imageData, filename: "\(fileId).jpg", mimeType: "image/jpeg")
-                    )
-                    
-                    let downloadUrl = AppwriteManager.shared.getFileViewURL(fileId: fileId)
-                    uploadedUrls.append(downloadUrl)
+        let db = Firestore.firestore()
+        
+        db.collection("Vehicles")
+            .whereField("vinNumber", isEqualTo: vinNumber)
+            .getDocuments { [weak self] (querySnapshot, err) in
+                guard let self = self else { return }
+                
+                if let err = err {
+                    print("Error checking for existing vehicle: \(err.localizedDescription)")
+                    self.errorMessage = "Error checking for existing vehicle: \(err.localizedDescription)"
+                    self.showErrorAlert = true
+                    completion(false)
+                    return
                 }
                 
-                // 2. Remove deleted images from Appwrite Storage
-                for imageUrl in removedImageUrls {
-                    if let fileId = getFileIdFromURL(imageUrl) {
-                        try? await AppwriteManager.shared.storage.deleteFile(
-                            bucketId: AppwriteManager.shared.bucketId,
-                            fileId: fileId
-                        )
-                    }
-                }
-                
-                let finalImageUrls = existingImageUrls + uploadedUrls
-                
-                // 3. Save vehicle document to databases
-                let result = try await AppwriteManager.shared.databases.listDocuments(
-                    databaseId: AppwriteManager.shared.databaseId,
-                    collectionId: "vehicles",
-                    queries: [
-                        Query.equal("vinNumber", value: vinNumber),
-                        Query.limit(1)
-                    ],
-                    nestedType: Vehicle.self
-                )
-                
-                if let existingDoc = result.documents.first {
+                if let existingVehicle = querySnapshot?.documents.first {
                     print("Existing vehicle found, updating...")
                     let updatedData: [String: Any] = [
                         "manufacturer": self.manufacturer,
@@ -425,54 +404,151 @@ class AddVehicleViewModel: ObservableObject {
                         "engine": self.engine,
                         "description": self.description,
                         "isActive": true,
-                        "ownerUID": self.userUID,
-                        "imageUrls": finalImageUrls
+                        "ownerUID": self.userUID
                     ]
                     
-                    _ = try await AppwriteManager.shared.databases.updateDocument(
-                        databaseId: AppwriteManager.shared.databaseId,
-                        collectionId: "vehicles",
-                        documentId: existingDoc.id,
-                        data: updatedData
-                    )
+                    existingVehicle.reference.updateData(updatedData) { error in
+                        if let error = error {
+                            print("Error updating vehicle: \(error.localizedDescription)")
+                            self.errorMessage = "Error updating vehicle: \(error.localizedDescription)"
+                            self.showErrorAlert = true
+                            completion(false)
+                        } else {
+                            print("Vehicle updated successfully")
+                            self.updateImages(for: existingVehicle.reference, completion: completion)
+                        }
+                    }
                 } else {
                     print("No existing vehicle found, adding new vehicle...")
-                    let vehicleID = "\(userUID)_\(UUID().uuidString)"
-                    
-                    let vehicle = Vehicle(
-                        manufacturer: manufacturer,
-                        model: model,
-                        year: yearInt,
-                        interiorColor: interiorColor,
-                        exteriorColor: exteriorColor,
-                        vinNumber: vinNumber,
-                        mileage: mileageInt,
-                        engine: engine,
-                        description: description,
-                        ownerUID: userUID,
-                        imageUrls: finalImageUrls,
-                        vehicleID: vehicleID,
-                        isActive: true
-                    )
-                    
-                    _ = try await AppwriteManager.shared.databases.createDocument(
-                        databaseId: AppwriteManager.shared.databaseId,
-                        collectionId: "vehicles",
-                        documentId: ID.unique(),
-                        data: vehicle.toDictionary
-                    )
+                    self.addNewVehicle(yearInt: yearInt, mileageInt: mileageInt, completion: completion)
                 }
-                
-                await MainActor.run {
+            }
+    }
+    
+    private func updateImages(for documentRef: DocumentReference, completion: @escaping (Bool) -> Void) {
+        let group = DispatchGroup()
+
+        // Remove images
+        for imageUrl in removedImageUrls {
+            group.enter()
+            Storage.storage().reference(forURL: imageUrl).delete { error in
+                if let error = error {
+                    print("Error deleting image: \(error.localizedDescription)")
+                }
+                group.leave()
+            }
+        }
+
+        // Upload new images
+        for (index, image) in selectedImages.enumerated() {
+            group.enter()
+            uploadImage(image, index: index, to: documentRef) {
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            documentRef.updateData([
+                "imageUrls": self.existingImageUrls
+            ]) { error in
+                if let error = error {
+                    print("Error updating document with imageUrls: \(error.localizedDescription)")
+                    completion(false)
+                } else {
+                    print("Vehicle images updated successfully")
                     completion(true)
                 }
-            } catch {
-                await MainActor.run {
-                    print("Error saving vehicle: \(error.localizedDescription)")
-                    self.errorMessage = "Error saving vehicle: \(error.localizedDescription)"
-                    self.showErrorAlert = true
-                    completion(false)
+            }
+        }
+    }
+    
+    private func addNewVehicle(yearInt: Int, mileageInt: Int, completion: @escaping (Bool) -> Void) {
+        let vehicleID = "\(userUID)_\(UUID().uuidString)"
+        
+        let vehicle = Vehicle(manufacturer: manufacturer,
+                              model: model,
+                              year: yearInt,
+                              interiorColor: interiorColor,
+                              exteriorColor: exteriorColor,
+                              vinNumber: vinNumber,
+                              mileage: mileageInt,
+                              engine: engine,
+                              description: description,
+                              ownerUID: userUID,
+                              imageUrls: [],
+                              vehicleID: vehicleID,
+                              isActive: true)
+        
+        do {
+            print("Attempting to add new vehicle to Firestore...")
+            let documentRef = try Firestore.firestore().collection("Vehicles").addDocument(from: vehicle)
+            print("Vehicle added successfully. Document ID: \(documentRef.documentID)")
+            uploadImages(for: documentRef)
+            completion(true)
+        } catch {
+            print("Error adding vehicle: \(error.localizedDescription)")
+            self.errorMessage = "Error adding vehicle: \(error.localizedDescription)"
+            self.showErrorAlert = true
+            completion(false)
+        }
+    }
+    
+    private func uploadImages(for documentRef: DocumentReference) {
+        for (index, image) in selectedImages.enumerated() {
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else { continue }
+            
+            let imageName = "\(UUID().uuidString)_\(index)"
+            let storageRef = Storage.storage().reference().child("VehicleImages/\(imageName)")
+            
+            storageRef.putData(imageData, metadata: nil) { metadata, error in
+                guard metadata != nil else {
+                    print("Error uploading image: \(error?.localizedDescription ?? "Unknown error")")
+                    return
                 }
+                
+                storageRef.downloadURL { url, error in
+                    guard let downloadURL = url else {
+                        print("Error getting download URL: \(error?.localizedDescription ?? "Unknown error")")
+                        return
+                    }
+                    
+                    documentRef.updateData([
+                        "imageUrls": FieldValue.arrayUnion([downloadURL.absoluteString])
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating document with imageUrls: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func uploadImage(_ image: UIImage, index: Int, to documentRef: DocumentReference, completion: @escaping () -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion()
+            return
+        }
+
+        let imageName = "\(UUID().uuidString)_\(index)"
+        let storageRef = Storage.storage().reference().child("VehicleImages/\(imageName)")
+
+        storageRef.putData(imageData, metadata: nil) { metadata, error in
+            guard metadata != nil else {
+                print("Error uploading image: \(error?.localizedDescription ?? "Unknown error")")
+                completion()
+                return
+            }
+
+            storageRef.downloadURL { url, error in
+                guard let downloadURL = url else {
+                    print("Error getting download URL: \(error?.localizedDescription ?? "Unknown error")")
+                    completion()
+                    return
+                }
+
+                self.existingImageUrls.append(downloadURL.absoluteString)
+                completion()
             }
         }
     }
@@ -522,4 +598,3 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
-
